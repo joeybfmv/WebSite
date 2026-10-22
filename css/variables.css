@@ -1,0 +1,60 @@
+/* ==========================================================
+   variables.css — Système de design centralisé
+   Direction artistique tirée des deux pochettes de référence :
+   - Pochette 1 : noir profond + rouge sang saturé + blanc os
+     (ornements gothiques blancs, éclaboussures)
+   - Pochette 2 : noir & blanc cendré, fumée / flammes, grain,
+     contrastes durs, texture photographique abîmée
+   ========================================================== */
+:root {
+  /* Couleurs */
+  --c-black: #050405;
+  --c-ink: #0b090a;
+  --c-coal: #141012;
+  --c-ash: #26211f;
+  --c-smoke: #6f6a66;
+  --c-bone: #ece6dc;
+  --c-white: #f7f3ec;
+  --c-blood: #b0121e;
+  --c-crimson: #d9192b;
+  --c-ember: #ff3b3b;
+  --c-dried: #5c0a11;
+
+  --bg: var(--c-black);
+  --bg-elevated: var(--c-coal);
+  --text: var(--c-bone);
+  --text-muted: #a8a19a;
+  --accent: var(--c-crimson);
+  --accent-strong: var(--c-blood);
+  --border: #2e2729;
+
+  /* Typographies (polices système : aucune dépendance externe) */
+  --font-display: "Impact", "Haettenschweiler", "Arial Narrow Bold", "Franklin Gothic Condensed", sans-serif;
+  --font-gothic: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Échelle typographique */
+  --fs-xs: .8rem;
+  --fs-sm: .92rem;
+  --fs-md: 1.05rem;
+  --fs-lg: 1.35rem;
+  --fs-xl: clamp(1.8rem, 4vw, 2.6rem);
+  --fs-2xl: clamp(2.4rem, 7vw, 4.5rem);
+  --fs-hero: clamp(4.5rem, 20vw, 13rem);
+
+  /* Espacements */
+  --sp-1: .25rem; --sp-2: .5rem; --sp-3: .75rem; --sp-4: 1rem;
+  --sp-5: 1.5rem; --sp-6: 2rem; --sp-7: 3rem; --sp-8: 5rem; --sp-9: 7rem;
+
+  /* Bordures & effets */
+  --radius: 2px;
+  --radius-lg: 6px;
+  --shadow-red: 0 0 24px rgba(217, 25, 43, .35);
+  --shadow-deep: 0 18px 40px rgba(0, 0, 0, .7);
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --t-fast: .18s;
+  --t-med: .5s;
+
+  --container: 1180px;
+  --header-h: 68px;
+}

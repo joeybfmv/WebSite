@@ -1,0 +1,18 @@
+/* materiel.css */
+.page-anchors { justify-content: center; margin-top: var(--sp-5); }
+.gear-group + .gear-group { margin-top: var(--sp-7); }
+.gear-group h3 { margin-bottom: var(--sp-4); padding-bottom: var(--sp-2); border-bottom: 1px solid var(--c-blood); display: inline-block; }
+.gear-card .card__media img { aspect-ratio: 4 / 3; }
+.gear-card h4 { font-size: 1.25rem; }
+.gear-meta { font-size: var(--fs-sm); color: var(--c-smoke); margin-block: var(--sp-1) var(--sp-3); text-transform: uppercase; letter-spacing: .08em; }
+
+/* Wayward Ship : même famille graphique, accent acier froid pour bien le distinguer du tribute */
+.ws { --ws-accent: #8fa3b3; background: linear-gradient(180deg, #0a0d10, #060708); border-block: 1px solid #1d262d; }
+.ws__tag { display: inline-block; margin-bottom: var(--sp-5); padding: .25rem .8rem; border: 1px solid var(--ws-accent); color: var(--ws-accent); text-transform: uppercase; letter-spacing: .18em; font-size: var(--fs-xs); max-width: none; }
+.ws .eyebrow { color: var(--ws-accent); }
+.ws .ornament { color: var(--ws-accent); }
+.ws .btn { border-color: var(--ws-accent); }
+.ws .btn:hover { box-shadow: 0 0 24px rgba(143,163,179,.35); background: rgba(143,163,179,.12); }
+.framed--ws::before { border-color: var(--ws-accent); }
+.members { display: flex; flex-wrap: wrap; gap: var(--sp-2); list-style: none; padding: 0; margin-top: var(--sp-4); }
+.members li { border: 1px solid #25313a; padding: .3rem .8rem; font-size: var(--fs-sm); color: var(--c-bone); }

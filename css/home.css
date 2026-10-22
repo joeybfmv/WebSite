@@ -1,0 +1,21 @@
+/* home.css */
+.hero {
+  position: relative; min-height: calc(100svh - var(--header-h)); display: grid; place-items: center; text-align: center; overflow: hidden;
+  background: linear-gradient(180deg, rgba(5,4,5,.35), rgba(5,4,5,.92)), url("../assets/images/hero/hero-bg.svg") center / cover no-repeat, var(--c-black);
+  border-bottom: 1px solid var(--c-dried);
+}
+.hero::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.75) 100%); pointer-events: none; }
+.hero__inner { position: relative; z-index: 2; padding-block: var(--sp-7); }
+.hero__kicker { margin-inline: auto; font-family: var(--font-gothic); font-style: italic; letter-spacing: .2em; text-transform: uppercase; color: var(--c-crimson); font-size: var(--fs-sm); }
+.hero__title { font-size: var(--fs-hero); line-height: .9; margin-block: var(--sp-3); color: var(--c-white); text-shadow: 0 0 40px rgba(217,25,43,.55), 4px 4px 0 var(--c-dried); animation: flicker 6s infinite; }
+.hero__subtitle { margin-inline: auto; font-family: var(--font-gothic); font-size: clamp(1.1rem, 3vw, 1.8rem); color: var(--c-bone); letter-spacing: .08em; }
+.hero__cta { justify-content: center; margin-top: var(--sp-6); }
+.hero__scroll { position: absolute; bottom: var(--sp-4); left: 50%; transform: translateX(-50%); z-index: 2; font-size: 1.6rem; text-decoration: none; color: var(--c-smoke); animation: bob 2.2s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translate(-50%, 8px); } }
+@keyframes flicker { 0%, 92%, 100% { opacity: 1; } 93% { opacity: .82; } 95% { opacity: 1; } 97% { opacity: .9; } }
+
+.preview-list { display: grid; gap: var(--sp-2); counter-reset: s; max-width: 760px; }
+.preview-list li { counter-increment: s; display: flex; gap: var(--sp-4); align-items: baseline; padding: .8rem 1rem; border-bottom: 1px solid var(--border); }
+.preview-list li::before { content: counter(s, decimal-leading-zero); font-family: var(--font-display); color: var(--c-crimson); min-width: 2ch; }
+.preview-list .t { color: var(--c-white); font-size: var(--fs-lg); }
+.preview-list .a { margin-left: auto; color: var(--c-smoke); font-size: var(--fs-sm); text-align: right; }

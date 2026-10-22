@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demandes — Administration Joɘy</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#050405">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/concerts.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin">
+  <div id="admin-bar"></div>
+  <main class="container admin-main" id="app" hidden>
+    <div id="admin-status" class="admin-status" role="status" aria-live="polite"></div>
+    <h1>Demandes de concert</h1>
+    <div class="admin-toolbar">
+      <div class="field"><label for="r-filter">Afficher</label>
+        <select id="r-filter"><option value="new">Nouvelles</option><option value="read">Lues</option><option value="replied">Répondues</option><option value="archived">Archivées</option><option value="all">Toutes</option></select></div>
+    </div>
+    <div id="req-list" class="admin-list" aria-live="polite"></div>
+  </main>
+  <script type="module" src="js/requests-admin.js"></script>
+</body>
+</html>

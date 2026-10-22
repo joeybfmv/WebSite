@@ -1,0 +1,63 @@
+/* effects.css — logo, animations, effets (désactivés si « réduire les animations ») */
+.logo { display: inline-flex; align-items: baseline; justify-content: center; gap: .02em; line-height: 1; text-transform: uppercase; }
+.logo__l { display: inline-block; font-family: var(--font-display); font-size: 1em; line-height: 1; }
+.logo__l--rev { transform: scaleX(-1); }
+.brand .logo { font-size: 1.9rem; }
+.hero__title .logo { gap: .03em; }
+
+/* Entrée des lettres + glitch */
+.hero__title .logo__l { animation: letterIn .9s var(--ease) both; }
+.hero__title .logo__l:nth-child(2) { animation-delay: .12s; }
+.hero__title .logo__l:nth-child(3) { animation-delay: .24s; }
+.hero__title .logo__l:nth-child(4) { animation-delay: .36s; }
+@keyframes letterIn { from { opacity: 0; translate: 0 .35em; filter: blur(14px); } to { opacity: 1; translate: 0 0; filter: none; } }
+.logo--glitch { animation: glitch 5s infinite 1.5s; }
+@keyframes glitch {
+  0%, 90%, 100% { text-shadow: none; translate: 0 0; }
+  91% { text-shadow: 6px 0 var(--c-ember), -6px 0 rgba(255,255,255,.7); translate: -3px 0; }
+  93% { text-shadow: -6px 0 var(--c-ember), 6px 0 rgba(255,255,255,.7); translate: 4px -2px; }
+  95% { text-shadow: 3px 0 var(--c-ember); translate: 0 2px; }
+  97% { text-shadow: none; translate: 0 0; }
+}
+
+/* Entrée de page, barre de progression, en-tête compact */
+body { animation: pageIn .6s var(--ease); }
+@keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
+.scroll-progress { position: fixed; left: 0; top: 0; height: 3px; width: 100%; z-index: 120; background: linear-gradient(90deg, var(--c-blood), var(--c-ember)); transform-origin: left; transform: scaleX(var(--p, 0)); box-shadow: 0 0 12px var(--c-crimson); pointer-events: none; }
+.header-inner { transition: min-height .3s var(--ease); }
+.site-header.is-scrolled .header-inner { min-height: 52px; }
+.site-header.is-scrolled { box-shadow: 0 8px 24px rgba(0,0,0,.7); }
+
+/* Hero : fumée / braises (canvas), lueur de souris, parallaxe */
+.hero { background-position: center top, center calc(50% + var(--py, 0px)), center; }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 40%), rgba(217,25,43,.28), transparent 70%); }
+.hero__fx { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+
+/* Bandeau défilant */
+.marquee { overflow: hidden; background: var(--c-blood); border-block: 1px solid var(--c-dried); transform: rotate(-1deg) scale(1.02); margin-block: -1px; position: relative; z-index: 3; }
+.marquee__track { display: flex; width: max-content; animation: marquee 28s linear infinite; }
+.marquee__track span { font-family: var(--font-display); text-transform: uppercase; letter-spacing: .2em; font-size: 1.15rem; padding: .7rem 0; white-space: pre; color: var(--c-white); }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* Apparitions variées + ornement qui se déploie */
+.framed.reveal { transform: translateX(40px) scale(.96); }
+.split--reverse .framed.reveal { transform: translateX(-40px) scale(.96); }
+.framed.reveal.is-visible { transform: none; }
+.reveal .ornament { transform: scaleX(0); transition: transform .9s var(--ease) .25s; }
+.reveal.is-visible .ornament { transform: scaleX(1); }
+.grid > .reveal:nth-child(2) { transition-delay: .12s; }
+.grid > .reveal:nth-child(3) { transition-delay: .24s; }
+
+/* Boutons : reflet qui passe */
+.btn { position: relative; overflow: hidden; }
+.btn::after { content: ""; position: absolute; top: 0; bottom: 0; left: -80%; width: 50%; background: linear-gradient(105deg, transparent, rgba(255,255,255,.35), transparent); transform: skewX(-20deg); transition: left .6s var(--ease); pointer-events: none; }
+.btn:hover::after { left: 130%; }
+
+/* Cartes : halo qui suit le curseur */
+.card::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; transition: opacity .3s; background: radial-gradient(320px circle at var(--gx, 50%) var(--gy, 50%), rgba(217,25,43,.22), transparent 70%); }
+.card:hover::before { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+  .marquee__track { width: auto; flex-wrap: wrap; }
+}

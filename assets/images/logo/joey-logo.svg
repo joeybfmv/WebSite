@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 392 108" role="img" aria-label="Joɘy">
+  <defs>
+    <path id="l" fill-rule="evenodd" d="M45 0H80V75Q80 100 55 100H20Q0 100 0 80V60H35V68Q35 72 40 72Q45 72 45 68Z
+      M130 0H150Q180 0 180 30V70Q180 100 150 100H130Q100 100 100 70V30Q100 0 130 0ZM135 28V72H145V28Z
+      M200 0H280V100H200V76H245V62H210V38H245V24H200Z
+      M300 0H338L340 42L342 0H380L360 58V100H320V58Z"/>
+  </defs>
+  <use href="#l" x="8" y="8" fill="#5c0a11"/>
+  <use href="#l" x="0" y="0" fill="#f7f3ec"/>
+</svg>

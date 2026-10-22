@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connexion — Administration Joɘy</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#050405">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin">
+  <main class="container">
+    <div class="login-box">
+      <h1>Administration</h1>
+      <p>Accès réservé. Connectez-vous pour gérer les concerts.</p>
+      <div id="login-status" role="status" aria-live="polite"></div>
+      <form id="login-form" class="form" novalidate>
+        <div class="field"><label for="email">E-mail</label><input id="email" type="email" autocomplete="username" required inputmode="email"></div>
+        <div class="field"><label for="password">Mot de passe</label><input id="password" type="password" autocomplete="current-password" required></div>
+        <button class="btn btn--primary" type="submit" id="login-btn">Se connecter</button>
+      </form>
+      <p class="mt-6"><a href="../index.html">← Retour au site</a></p>
+    </div>
+  </main>
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Concerts — Administration Joɘy</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#050405">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/concerts.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin">
+  <div id="admin-bar"></div>
+  <main class="container admin-main" id="app" hidden>
+    <div id="admin-status" class="admin-status" role="status" aria-live="polite"></div>
+
+    <!-- ===== Liste ===== -->
+    <section id="list-view" aria-labelledby="list-title">
+      <h1 id="list-title">Concerts</h1>
+      <div class="admin-toolbar">
+        <div class="field">
+          <label for="filter">Afficher</label>
+          <select id="filter">
+            <option value="upcoming">À venir</option>
+            <option value="past">Passés</option>
+            <option value="all">Tous</option>
+          </select>
+        </div>
+        <button class="btn btn--primary" type="button" id="add-btn">+ Ajouter un concert</button>
+      </div>
+      <div id="admin-list" class="admin-list" aria-live="polite"></div>
+    </section>
+
+    <!-- ===== Formulaire ===== -->
+    <section id="form-view" hidden aria-labelledby="form-title">
+      <h1 id="form-title">Nouveau concert</h1>
+      <form id="concert-form" class="admin-form" novalidate>
+        <fieldset>
+          <legend>Informations</legend>
+          <div class="field"><label for="f-title">Titre de l'événement *</label><input id="f-title" name="title" type="text" maxlength="160" required><span class="error" data-error-for="title"></span></div>
+          <div class="form-grid">
+            <div class="field"><label for="f-date">Date *</label><input id="f-date" name="date" type="date" required><span class="error" data-error-for="date"></span></div>
+            <div class="field"><label for="f-time">Heure *</label><input id="f-time" name="time" type="time" value="20:30" required><span class="error" data-error-for="time"></span></div>
+          </div>
+          <div class="field"><label for="f-description">Description (facultatif)</label><textarea id="f-description" name="description" maxlength="2000"></textarea></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Lieu</legend>
+          <div class="field"><label for="f-venue">Salle / lieu</label><input id="f-venue" name="venue_name" type="text" maxlength="160"></div>
+          <div class="field"><label for="f-address">Adresse complète</label><input id="f-address" name="address" type="text" maxlength="300" autocomplete="off"><span class="hint">Utilisée pour l'itinéraire Google Maps.</span></div>
+          <div class="field"><label for="f-city">Ville</label><input id="f-city" name="city" type="text" maxlength="120"></div>
+          <div class="form-grid">
+            <div class="field"><label for="f-lat">Latitude (facultatif)</label><input id="f-lat" name="latitude" type="text" inputmode="decimal" placeholder="ex : 48.8566"><span class="error" data-error-for="latitude"></span></div>
+            <div class="field"><label for="f-lng">Longitude (facultatif)</label><input id="f-lng" name="longitude" type="text" inputmode="decimal" placeholder="ex : 2.3522"><span class="error" data-error-for="longitude"></span></div>
+          </div>
+          <span class="hint">Si les coordonnées sont renseignées, elles sont utilisées à la place de l'adresse pour l'itinéraire.</span>
+        </fieldset>
+
+        <fieldset>
+          <legend>Tarif</legend>
+          <div class="field"><label for="f-price-type">Entrée</label>
+            <select id="f-price-type" name="price_type">
+              <option value="none">Ne pas préciser</option>
+              <option value="free">Gratuit</option>
+              <option value="paid">Payant (sans préciser le prix)</option>
+              <option value="amount">Payant : indiquer le prix</option>
+            </select></div>
+          <div class="field" id="price-amount-field" hidden><label for="f-price">Prix (€)</label><input id="f-price" name="price_amount" type="text" inputmode="decimal" placeholder="ex : 10 ou 7,50"><span class="error" data-error-for="price_amount"></span></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Réservation &amp; affiche</legend>
+          <div class="field"><label for="f-booking">Lien de réservation (facultatif)</label><input id="f-booking" name="reservation_url" type="url" inputmode="url" placeholder="https://…" maxlength="500"><span class="hint">Laissez vide : le bouton « Réserver » n'apparaît pas.</span><span class="error" data-error-for="reservation_url"></span></div>
+          <div class="field">
+            <label for="f-poster">Affiche (JPG, PNG ou WebP)</label>
+            <input id="f-poster" name="poster" type="file" accept="image/jpeg,image/png,image/webp">
+            <span class="hint">L'image est redimensionnée automatiquement (max. 1600 px).</span>
+            <span class="error" data-error-for="poster"></span>
+          </div>
+          <div id="poster-box" class="poster-preview" hidden><img id="poster-img" alt="Aperçu de l'affiche"></div>
+          <button class="btn btn--small btn--danger" type="button" id="poster-remove" hidden>Retirer l'affiche</button>
+        </fieldset>
+
+        <fieldset>
+          <legend>Publication</legend>
+          <label class="switch" for="f-published"><input id="f-published" name="is_published" type="checkbox"> Publié sur le site public</label>
+        </fieldset>
+
+        <div class="form-actions">
+          <button class="btn btn--primary" type="submit" id="save-btn">Enregistrer</button>
+          <button class="btn btn--ghost" type="button" id="cancel-btn">Annuler</button>
+        </div>
+      </form>
+
+      <aside class="preview-panel" aria-labelledby="preview-title">
+        <h2 id="preview-title">Aperçu sur le site</h2>
+        <div id="preview"></div>
+      </aside>
+    </section>
+  </main>
+  <script type="module" src="js/concerts-admin.js"></script>
+</body>
+</html>

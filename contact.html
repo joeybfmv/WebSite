@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact — Joɘy, Tribute de Bullet for My Valentine</title>
+  <meta name="description" content="Contacter Joɘy et proposer un concert : coordonnées, formulaire pour salles et organisateurs, fonctionnement du projet tribute.">
+  <meta name="theme-color" content="#050405">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="canonical" href="https://waywardship.github.io/WebSite/contact.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Contact — Joɘy, Tribute BFMV">
+  <meta property="og:description" content="Proposer un concert ou me contacter.">
+  <meta property="og:image" content="https://waywardship.github.io/WebSite/assets/images/hero/hero-bg.svg">
+  <meta property="og:url" content="https://waywardship.github.io/WebSite/contact.html">
+  <meta property="og:locale" content="fr_FR">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/contact.css">
+  <link rel="stylesheet" href="css/effects.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Aller au contenu</a>
+  <div id="site-header"></div>
+  <main id="main">
+    <header class="page-hero">
+      <div class="container">
+        <p class="eyebrow">Parlons-en</p>
+        <h1>Contact</h1>
+        <p>Une question, une date à proposer ? Voici comment me joindre.</p>
+      </div>
+    </header>
+
+    <section class="section" id="contact" aria-labelledby="contact-title">
+      <div class="container grid grid--2">
+        <div class="reveal">
+          <h2 id="contact-title">Me contacter</h2>
+          <ul id="contact-methods" class="contact-methods list-reset"></ul>
+          <div id="contact-actions" class="btn-row mt-6"></div>
+          <div id="contact-socials" class="mt-6"></div>
+        </div>
+        <div class="reveal" id="fonctionnement">
+          <h2>Fonctionnement du projet</h2>
+          <div id="project-text" class="mt-4"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--alt" id="proposer" aria-labelledby="propose-title">
+      <div class="container contact-form-wrap">
+        <div class="section-head">
+          <p class="eyebrow">Salles · associations · organisateurs</p>
+          <h2 id="propose-title">Proposer un concert</h2>
+          <p>Décrivez votre événement : je reviens vers vous par e-mail. L'envoi de ce formulaire ne constitue pas une réservation ni un engagement.</p>
+        </div>
+
+        <form id="contact-form" class="form" novalidate>
+          <div class="hp-field" aria-hidden="true">
+            <label for="cf-website">Ne pas remplir</label>
+            <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+          <div class="form-grid">
+            <div class="field"><label for="cf-name">Nom de l'organisateur *</label><input id="cf-name" name="name" type="text" required maxlength="120" autocomplete="name"><span class="error" data-error-for="name"></span></div>
+            <div class="field"><label for="cf-email">Adresse e-mail *</label><input id="cf-email" name="email" type="email" required maxlength="200" autocomplete="email"><span class="error" data-error-for="email"></span></div>
+          </div>
+          <div class="form-grid">
+            <div class="field"><label for="cf-org">Salle ou événement</label><input id="cf-org" name="organization" type="text" maxlength="160"><span class="error" data-error-for="organization"></span></div>
+            <div class="field"><label for="cf-city">Ville</label><input id="cf-city" name="city" type="text" maxlength="120" autocomplete="address-level2"><span class="error" data-error-for="city"></span></div>
+          </div>
+          <div class="field"><label for="cf-date">Date envisagée</label><input id="cf-date" name="event_date" type="date"><span class="error" data-error-for="event_date"></span></div>
+          <div class="field"><label for="cf-message">Message *</label><textarea id="cf-message" name="message" required minlength="10" maxlength="2000"></textarea><span class="hint"><span id="cf-count">0</span> / 2000 caractères</span><span class="error" data-error-for="message"></span></div>
+          <div class="field consent">
+            <label class="check"><input id="cf-consent" name="consent" type="checkbox" required> J'accepte que ces informations soient utilisées pour répondre à ma demande, conformément à la <a href="confidentialite.html">politique de confidentialité</a>. *</label>
+            <span class="error" data-error-for="consent"></span>
+          </div>
+          <div id="cf-status" role="status" aria-live="polite"></div>
+          <div><button class="btn btn--primary" type="submit" id="cf-submit">Envoyer ma demande</button></div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/contact.js"></script>
+</body>
+</html>

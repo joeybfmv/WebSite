@@ -1,0 +1,18 @@
+/* concerts.css — cartes de concerts (accueil + page dédiée) */
+.concert { display: grid; grid-template-columns: auto 1fr; align-items: stretch; }
+.concert__date { display: grid; place-content: center; text-align: center; padding: var(--sp-4) var(--sp-5); background: linear-gradient(180deg, var(--c-blood), var(--c-dried)); min-width: 92px; }
+.concert__day { font-family: var(--font-display); font-size: 2.6rem; line-height: 1; color: var(--c-white); }
+.concert__month { text-transform: uppercase; letter-spacing: .15em; font-size: var(--fs-sm); color: var(--c-bone); }
+.concert__poster { grid-column: 1 / -1; grid-row: 2; max-height: 420px; overflow: hidden; background: var(--c-black); }
+.concert__poster img { width: 100%; max-height: 420px; object-fit: contain; }
+.concert--with-poster .concert__body { grid-row: 1; }
+.concert__when { display: block; color: var(--c-crimson); text-transform: uppercase; letter-spacing: .1em; font-size: var(--fs-sm); }
+.concert__title { margin-block: var(--sp-2); }
+.concert__place { color: var(--c-bone); }
+.concert__address, .concert__desc { font-size: var(--fs-sm); margin-top: var(--sp-2); }
+.concert__nobooking { font-size: var(--fs-sm); font-style: italic; margin-top: var(--sp-3); color: var(--c-smoke); }
+.concert .btn-row { margin-top: var(--sp-4); }
+.concerts-list { display: grid; gap: var(--sp-5); max-width: 900px; margin-inline: auto; }
+@media (max-width: 520px) { .concert__date { min-width: 72px; padding-inline: var(--sp-3); } }
+
+.concert__price { display: inline-block; width: fit-content; margin-block: var(--sp-2); padding: .2rem .7rem; font-family: var(--font-display); letter-spacing: .1em; text-transform: uppercase; font-size: var(--fs-sm); color: var(--c-white); background: var(--c-dried); border: 1px solid var(--c-blood); }
