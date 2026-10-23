@@ -47,7 +47,7 @@ export function el(tag, attrs = {}, ...children) {
     else if (k === "text") node.textContent = v;
     else node.setAttribute(k, v === true ? "" : v);
   }
-  for (const c of children.flat()) if (c != null) node.append(c.nodeType ? c : document.createTextNode(c));
+  for (const c of children.flat()) if (c != null && c !== false && c !== true) node.append(c.nodeType ? c : document.createTextNode(c));
   return node;
 }
 
