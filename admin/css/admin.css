@@ -42,3 +42,8 @@ body.admin { padding-bottom: var(--sp-8); }
 [hidden] { display: none !important; }
 
 .req-msg { white-space: pre-wrap; color: var(--text); background: var(--c-ink); border-left: 3px solid var(--c-blood); padding: var(--sp-3) var(--sp-4); margin-block: var(--sp-3); max-width: none; }
+
+.admin-thumbs { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-3); }
+.admin-thumb { display: grid; gap: var(--sp-2); justify-items: center; }
+.admin-thumb img, .admin-cover { width: 96px; height: 96px; object-fit: cover; border: 1px solid var(--border); }
+.admin-cover { margin-bottom: var(--sp-2); }

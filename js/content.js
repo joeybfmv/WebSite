@@ -40,8 +40,8 @@ export const CONTENT = {
     title: "Wayward Ship",
     teaser: "Mon groupe, distinct de ce projet tribute : cinq membres, des reprises metalcore et nu metal.",
     bio: "Wayward Ship est un groupe formé en 2023, qui a réellement commencé son activité scénique en 2026. Composé de cinq membres uniques, chacun apportant son style et son talent, le groupe propose des reprises de metalcore et de nu metal de qualité.",
-    photo: "assets/images/wayward-ship/placeholder.svg",
-    photoAlt: "Photo de Wayward Ship (à remplacer)",
+    photo: "assets/images/wayward-ship/wayward-ship.jpg",
+    photoAlt: "Photo du groupe Wayward Ship avec ses guitares",
     members: [] // ex : [{ name: "Prénom", role: "Chant" }]
   },
 

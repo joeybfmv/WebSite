@@ -29,8 +29,12 @@ export const CONFIG = {
     spotify: ""
   },
 
+  features: {
+    merch: false // passer à true le jour où l'onglet Merch doit apparaître au public
+  },
+
   officialLinks: {
-    bfmvWebsite: "https://www.bfmvmetal.com/", // site officiel du groupe — à vérifier avant publication
+    bfmvWebsite: "https://www.bulletformyvalentine.com/", // site officiel du groupe
     waywardShip: {
       website: "https://waywardship.github.io/WebSite/",
       instagram: "",

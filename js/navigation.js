@@ -10,6 +10,8 @@ const LINKS = [
   { href: "contact.html", label: "Contact" }
 ];
 
+if (CONFIG.features?.merch) LINKS.splice(4, 0, { href: "merch.html", label: "Merch" });
+
 function currentPage() {
   const last = location.pathname.split("/").pop();
   return last === "" ? "index.html" : last;

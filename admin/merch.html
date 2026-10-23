@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Merch — Administration Joɘy</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#050405">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/concerts.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin">
+  <div id="admin-bar"></div>
+  <main class="container admin-main" id="app" hidden>
+    <div id="admin-status" class="admin-status" role="status" aria-live="polite"></div>
+    <h1>Merch</h1>
+    <p id="merch-visibility" class="admin-item__meta"></p>
+    <form id="m-form" class="admin-form" novalidate>
+      <fieldset>
+        <legend id="m-legend">Ajouter un produit</legend>
+        <div class="form-grid">
+          <div class="field"><label for="m-name">Nom *</label><input id="m-name" name="name" type="text" maxlength="160"></div>
+          <div class="field"><label for="m-price">Prix (€) *</label><input id="m-price" name="price" type="text" inputmode="decimal" placeholder="ex : 20 ou 17,50"></div>
+          <div class="field"><label for="m-stock">Stock (facultatif)</label><input id="m-stock" name="stock" type="text" inputmode="numeric" placeholder="Vide = non suivi"></div>
+        </div>
+        <div class="field"><label for="m-desc">Description</label><textarea id="m-desc" name="description" rows="3" maxlength="2000"></textarea></div>
+      </fieldset>
+      <fieldset>
+        <legend>Mode de vente</legend>
+        <div class="field"><label for="m-mode">Comment l'acheter ?</label>
+          <select id="m-mode" name="sale_mode">
+            <option value="onsite">Acheter sur place, au stand merch</option>
+            <option value="external">Lien vers une boutique externe</option>
+            <option value="cart">Ajouter au panier sur le site</option>
+          </select></div>
+        <div class="field" id="m-url-field" hidden><label for="m-url">Lien de la boutique (https://…)</label><input id="m-url" name="external_url" type="url" maxlength="500"></div>
+      </fieldset>
+      <fieldset>
+        <legend>Photos (6 maximum, la première est l'image principale)</legend>
+        <div class="field"><label for="m-files">Ajouter des photos (JPG, PNG ou WebP)</label><input id="m-files" type="file" accept="image/jpeg,image/png,image/webp" multiple></div>
+        <div id="m-images" class="admin-thumbs"></div>
+      </fieldset>
+      <label class="switch" for="m-pub"><input id="m-pub" name="is_published" type="checkbox"> Visible dans la boutique (quand l'onglet Merch est ouvert)</label>
+      <p id="m-error" class="error" role="alert"></p>
+      <div class="form-actions">
+        <button class="btn btn--primary" type="submit" id="m-save">Ajouter</button>
+        <button class="btn btn--ghost" type="button" id="m-cancel" hidden>Annuler</button>
+      </div>
+    </form>
+    <div id="m-list" class="admin-list" aria-live="polite"></div>
+  </main>
+  <script type="module" src="js/merch-admin.js"></script>
+</body>
+</html>

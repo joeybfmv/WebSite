@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+  <meta name="robots" content="noindex">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Merch — Joɘy, Tribute de Bullet For My Valentine</title>
+  <meta name="description" content="Le merch de Joɘy : t-shirts et goodies, à retrouver sur place lors des concerts.">
+  <meta name="theme-color" content="#050405">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Setlist — Joɘy, Tribute BFMV">
+  <meta property="og:description" content="Tous les morceaux joués en live.">
+  <meta property="og:image" content="https://waywardship.github.io/WebSite/assets/images/hero/hero-bg.svg">
+  <meta property="og:url" content="https://waywardship.github.io/WebSite/merch.html">
+  <meta property="og:locale" content="fr_FR">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/merch.css">
+  <link rel="stylesheet" href="css/effects.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Aller au contenu</a>
+  <div id="site-header"></div>
+  <main id="main">
+    <header class="page-hero">
+      <div class="container">
+        <p class="eyebrow">Boutique</p>
+        <h1>Merch</h1>
+        <p>T-shirts et goodies du projet.</p>
+      </div>
+    </header>
+    <section class="section" aria-label="Produits">
+      <div class="container">
+        <div id="merch-bar" class="merch-bar" hidden><button id="cart-toggle" class="btn btn--ghost" type="button" aria-controls="merch-cart">Panier (0)</button></div>
+        <div id="merch-root" aria-live="polite"></div>
+        <section id="merch-cart" class="merch-cart" aria-label="Mon panier" hidden></section>
+      </div>
+    </section>
+  </main>
+  <div id="site-footer"></div>
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/merch.js"></script>
+</body>
+</html>
