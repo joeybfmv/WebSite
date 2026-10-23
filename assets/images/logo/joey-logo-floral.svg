@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-16 -8 424 124" role="img" aria-label="Joɘy">
+  <defs>
+    <path id="l" fill-rule="evenodd" d="M45 0H80V75Q80 100 55 100H20Q0 100 0 80V60H35V68Q35 72 40 72Q45 72 45 68Z
+      M130 0H150Q180 0 180 30V70Q180 100 150 100H130Q100 100 100 70V30Q100 0 130 0ZM135 28V72H145V28Z
+      M200 0H280V100H200V76H245V62H210V38H245V24H200Z
+      M300 0H332L340 36L348 0H380V28L358 62V100H322V62L300 28Z"/>
+  </defs>
+
+  <use href="#l" x="8" y="8" fill="#5c0a11"/>
+  <use href="#l" x="0" y="0" fill="#f7f3ec"/>
+  <!-- Floral ornaments added around the original logo; original paths below remain unchanged. -->
+  <g fill="none" stroke="#5c0a11" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 91 C17 82 18 68 10 58 C5 51 7 43 16 39 C26 35 31 43 27 50 C24 55 18 53 19 48"/>
+    <path d="M387 91 C375 82 374 68 382 58 C387 51 385 43 376 39 C366 35 361 43 365 50 C368 55 374 53 373 48"/>
+    <path d="M12 30 C22 23 29 22 38 26 M380 30 C370 23 363 22 354 26"/>
+  </g>
+  <g fill="#5c0a11" stroke="#5c0a11" stroke-width="1.1" stroke-linejoin="round">
+    <!-- Left rose -->
+    <path d="M17 67 C10 62 12 55 18 55 C19 48 28 49 29 55 C36 52 40 59 35 64 C38 71 30 75 25 70 C20 75 13 72 17 67Z"/>
+    <path d="M19 62 C17 58 22 56 24 60 C25 55 31 57 29 62 C34 62 32 68 27 66 C25 71 20 68 22 65Z" fill="#f7f3ec"/>
+    <path d="M9 42 Q1 35 3 28 Q12 31 14 39Z M29 35 Q31 26 39 24 Q40 33 32 38Z M30 78 Q38 76 42 82 Q34 87 28 82Z"/>
+    <!-- Right rose -->
+    <path d="M375 67 C382 62 380 55 374 55 C373 48 364 49 363 55 C356 52 352 59 357 64 C354 71 362 75 367 70 C372 75 379 72 375 67Z"/>
+    <path d="M373 62 C375 58 370 56 368 60 C367 55 361 57 363 62 C358 62 360 68 365 66 C367 71 372 68 370 65Z" fill="#f7f3ec"/>
+    <path d="M383 42 Q391 35 389 28 Q380 31 378 39Z M363 35 Q361 26 353 24 Q352 33 360 38Z M362 78 Q354 76 350 82 Q358 87 364 82Z"/>
+    <!-- Small buds and leaves -->
+    <path d="M39 20 Q43 12 50 13 Q49 21 41 23Z M353 20 Q349 12 342 13 Q343 21 351 23Z"/>
+    <path d="M7 84 Q14 79 19 84 Q14 90 7 84Z M385 84 Q378 79 373 84 Q378 90 385 84Z"/>
+  </g>
+
+
+</svg>
