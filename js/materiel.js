@@ -11,7 +11,9 @@ const gearBox = document.getElementById("gear");
 gearBox.replaceChildren(stateLoading("Chargement du matériel…"));
 
 function gearCard(g) {
-  const img = safeUrl(g.image_url) || "assets/images/guitars/placeholder.svg";
+  const key = `${g.name} ${g.model || ""}`.toLowerCase();
+  const local = (CONTENT.gearImages.find(([k]) => key.includes(k)) || [])[1];
+  const img = safeUrl(g.image_url) || local || "assets/images/guitars/placeholder.svg";
   const meta = [g.brand, g.model].filter((v) => isFilled(v)).join(" · ");
   return el("article", { class: "card gear-card reveal" },
     el("div", { class: "card__media" }, el("img", { src: img, alt: g.name, loading: "lazy", decoding: "async", width: "800", height: "600" })),

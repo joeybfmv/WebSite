@@ -45,6 +45,12 @@ export const CONTENT = {
     members: [] // ex : [{ name: "Prénom", role: "Chant" }]
   },
 
+  // Images locales du matériel (utilisées si aucune image n'est définie dans Supabase). [mot-clé du nom, image]
+  gearImages: [
+    ["ex-84", "assets/images/guitars/harley-benton-ex84.jpg"],
+    ["g110", "assets/images/guitars/cort-g110.jpg"]
+  ],
+
   gearTeaser: "Harley Benton EX-84 Modern EMG BK et Cort G110 Open Pore Black : les guitares utilisées en concert."
 };
 
