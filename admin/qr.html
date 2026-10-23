@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QR code merch — Administration Joɘy</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#050405">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/concerts.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin">
+  <div id="admin-bar" class="no-print"></div>
+  <main class="container admin-main" id="app" hidden>
+    <h1 class="no-print">QR code du merch</h1>
+    <div class="admin-form no-print">
+      <div class="field"><label for="q-url">Adresse à ouvrir quand on scanne</label><input id="q-url" type="url"></div>
+      <div class="form-actions">
+        <button class="btn btn--primary" type="button" id="q-print">Imprimer l'affiche</button>
+        <button class="btn btn--ghost" type="button" id="q-svg">Télécharger en SVG</button>
+        <button class="btn btn--ghost" type="button" id="q-png">Télécharger en PNG</button>
+      </div>
+      <p id="q-error" class="error" role="alert"></p>
+    </div>
+    <section class="qr-poster" aria-label="Aperçu de l'affiche">
+      <h2>Merch</h2><p>Scanne pour voir la boutique</p>
+      <div id="q-box"></div>
+      <p id="q-text" class="qr-url"></p><p>Joɘy · Tribute de Bullet For My Valentine</p>
+    </section>
+  </main>
+  <script type="module" src="js/qr.js"></script>
+</body>
+</html>

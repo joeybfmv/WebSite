@@ -30,7 +30,8 @@ export const CONFIG = {
   },
 
   features: {
-    merch: false // passer à true le jour où l'onglet Merch doit apparaître au public
+    merch: false, // passer à true le jour où l'onglet Merch doit apparaître au public
+    onlinePayment: false // passer à true seulement après la mise en place de Stripe (voir docs/MERCH-SETUP.md)
   },
 
   officialLinks: {

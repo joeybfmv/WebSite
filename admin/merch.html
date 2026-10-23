@@ -31,6 +31,11 @@
           <div class="field"><label for="m-stock">Stock (facultatif)</label><input id="m-stock" name="stock" type="text" inputmode="numeric" placeholder="Vide = non suivi"></div>
         </div>
         <div class="field"><label for="m-desc">Description</label><textarea id="m-desc" name="description" rows="3" maxlength="2000"></textarea></div>
+        <div class="field"><label for="m-variants">Variantes (tailles, couleurs…) : une par ligne, stock facultatif après « ; »</label>
+          <textarea id="m-variants" name="variants" rows="4" placeholder="S; 5&#10;M; 8&#10;L"></textarea>
+          <p class="admin-item__meta">« M; 8 » = taille M, 8 en stock. Avec des variantes, le stock se gère par variante et le champ « Stock » est ignoré.</p></div>
+        <div class="field"><label for="m-badge">Badge</label>
+          <select id="m-badge" name="badge"><option value="auto">Automatique (Nouveau, Dernières pièces)</option><option value="new">Toujours « Nouveau »</option><option value="last">Toujours « Dernières pièces »</option><option value="none">Aucun</option></select></div>
       </fieldset>
       <fieldset>
         <legend>Mode de vente</legend>

@@ -14,6 +14,18 @@ const sb = await getClient();
 const form = $("m-form");
 const BUCKET = "posters", MAX_SIDE = 1400, MAX_IMAGES = 6;
 const eur = (n) => new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(Number(n));
+const parseVariants = (text) => {
+  const out = [];
+  for (const line of text.split("\n").map((l) => l.trim()).filter(Boolean)) {
+    const [label, st = ""] = line.split(";").map((x) => x.trim());
+    if (!label || label.length > 40) return { error: "Chaque variante doit avoir un nom de 40 caractères maximum." };
+    if (out.some((o) => o.label.toLowerCase() === label.toLowerCase())) return { error: `La variante « ${label} » est en double.` };
+    const stock = st === "" ? null : Number(st);
+    if (stock !== null && (!Number.isInteger(stock) || stock < 0)) return { error: `Stock invalide pour « ${label} » (nombre entier ou vide).` };
+    out.push({ label, stock });
+  }
+  return out.length > 20 ? { error: "20 variantes maximum." } : { options: out };
+};
 const MODE = { onsite: "Sur place", external: "Boutique externe", cart: "Panier du site" };
 let products = [], editing = null, imgs = []; // imgs : { url?, blob?, preview }
 
@@ -87,7 +99,7 @@ function render() {
       cover ? el("img", { class: "admin-cover", src: cover, alt: "" }) : null,
       el("div", {}, el("span", { class: `badge${p.is_published ? " badge--accent" : ""}`, text: p.is_published ? "Visible" : "Masqué" })),
       el("h2", { text: p.name }),
-      el("p", { class: "admin-item__meta", text: `${eur(p.price)} · ${MODE[p.sale_mode]} · ${Number.isInteger(p.stock) ? `stock : ${p.stock}` : "stock non suivi"}` }),
+      el("p", { class: "admin-item__meta", text: `${eur(p.price)} · ${MODE[p.sale_mode]} · ${(p.options || []).length ? "variantes : " + p.options.map((o) => `${o.label}${Number.isInteger(o.stock) ? ` (${o.stock})` : ""}`).join(", ") : Number.isInteger(p.stock) ? `stock : ${p.stock}` : "stock non suivi"}` }),
       el("div", { class: "admin-item__actions" },
         btn("↑", "btn--ghost", () => move(i, -1), i === 0), btn("↓", "btn--ghost", () => move(i, 1), i === products.length - 1),
         btn("Modifier", "", () => startEdit(p)),
@@ -120,7 +132,7 @@ form.elements.sale_mode.addEventListener("change", toggleUrl);
 function startEdit(p) {
   editing = p; const F = form.elements;
   F.name.value = p.name; F.price.value = String(p.price).replace(".", ","); F.stock.value = p.stock ?? ""; F.description.value = p.description || "";
-  F.sale_mode.value = p.sale_mode; F.external_url.value = p.external_url || ""; F.is_published.checked = !!p.is_published;
+  F.variants.value = (p.options || []).map((o) => (Number.isInteger(o.stock) ? `${o.label}; ${o.stock}` : o.label)).join("\n"); F.badge.value = p.badge || "auto"; F.sale_mode.value = p.sale_mode; F.external_url.value = p.external_url || ""; F.is_published.checked = !!p.is_published;
   imgs = (p.images || []).map((url) => ({ url, preview: url })); renderImages(); toggleUrl();
   $("m-legend").textContent = "Modifier le produit"; $("m-save").textContent = "Enregistrer"; $("m-cancel").hidden = false;
   window.scrollTo({ top: 0, behavior: "smooth" }); F.name.focus();
@@ -140,12 +152,13 @@ form.addEventListener("submit", async (e) => {
   if (name.length < 2) return void (err.textContent = "Le nom est obligatoire (2 caractères minimum).");
   if (!Number.isFinite(price) || price < 0 || price > 99999) return void (err.textContent = "Indiquez un prix valide (ex : 20 ou 17,50).");
   if (stock !== null && (!Number.isInteger(stock) || stock < 0)) return void (err.textContent = "Le stock doit être un nombre entier (ou laissé vide).");
+  const pv = parseVariants(F.variants.value); if (pv.error) return void (err.textContent = pv.error);
   if (mode === "external" && !/^https:\/\/\S+$/i.test(url)) return void (err.textContent = "Indiquez le lien de la boutique, en https://.");
   const btn = $("m-save"); btn.disabled = true;
   try {
     const urls = [];
     for (const im of imgs) urls.push(im.url || await uploadImage(im.blob));
-    const row = { name, description: F.description.value.trim() || null, price, stock, sale_mode: mode, external_url: mode === "external" ? url : null, images: urls, is_published: F.is_published.checked };
+    const row = { name, description: F.description.value.trim() || null, price, stock: pv.options.length ? null : stock, options: pv.options, badge: F.badge.value, sale_mode: mode, external_url: mode === "external" ? url : null, images: urls, is_published: F.is_published.checked };
     const { error } = editing
       ? await sb.from("merch_products").update(row).eq("id", editing.id)
       : await sb.from("merch_products").insert({ ...row, position: products.reduce((m, p) => Math.max(m, p.position || 0), 0) + 1 });

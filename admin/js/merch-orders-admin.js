@@ -10,7 +10,7 @@ if (!user) throw new Error("Non autorisé");
 mountAdminBar($("admin-bar"), user, "merch-orders.html");
 $("app").hidden = false;
 const sb = await getClient();
-const LABEL = { new: "Nouvelle", confirmed: "Confirmée", ready: "Prête à remettre", done: "Terminée", cancelled: "Annulée" };
+const LABEL = { pending_payment: "En attente de paiement", paid: "Payée en ligne", new: "Nouvelle", confirmed: "Confirmée", ready: "Prête à remettre", done: "Terminée", cancelled: "Annulée" };
 const eur = (n) => new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(Number(n));
 let rows = [], timer;
 function notify(type, text) {
@@ -39,18 +39,18 @@ function render() {
   for (const o of shown) {
     const btn = (text, cls, fn) => { const b = el("button", { class: `btn btn--small ${cls}`, type: "button", text }); b.addEventListener("click", fn); return b; };
     const subject = encodeURIComponent("Votre commande merch");
-    list.append(el("article", { class: `admin-item${o.status === "new" ? " admin-item--published" : ""}` },
-      el("div", {}, el("span", { class: `badge${o.status === "new" ? " badge--accent" : ""}`, text: LABEL[o.status] }), el("span", { class: "badge", text: ` ${formatDate(o.created_at)} ${formatTime(o.created_at)}` })),
+    list.append(el("article", { class: `admin-item${["new", "paid"].includes(o.status) ? " admin-item--published" : ""}` },
+      el("div", {}, el("span", { class: `badge${["new", "paid"].includes(o.status) ? " badge--accent" : ""}`, text: LABEL[o.status] }), el("span", { class: "badge", text: ` ${formatDate(o.created_at)} ${formatTime(o.created_at)}` })),
       el("h2", { text: `${o.name} — ${eur(o.total)}` }),
-      el("p", { class: "admin-item__meta", text: o.email }),
-      el("ul", {}, (o.items || []).map((i) => el("li", { text: `${i.qty} × ${i.name} (${eur(i.price)})` }))),
+      el("p", { class: "admin-item__meta", text: `${o.email} · ${o.payment_method === "online" ? "paiement en ligne" : "réservation (paiement à la remise)"}` }),
+      el("ul", {}, (o.items || []).map((i) => el("li", { text: `${i.qty} × ${i.name}${i.variant ? ` (${i.variant})` : ""} — ${eur(i.price)}` }))),
       o.message ? el("p", { class: "req-msg", text: o.message }) : null,
       el("div", { class: "admin-item__actions" },
         el("a", { class: "btn btn--small btn--primary", href: `mailto:${o.email}?subject=${subject}`, text: "Répondre par e-mail" }),
         o.status === "new" && btn("Confirmer", "btn--ghost", () => setStatus(o, "confirmed")),
-        o.status === "confirmed" && btn("Prête à remettre", "btn--ghost", () => setStatus(o, "ready")),
-        ["new", "confirmed", "ready"].includes(o.status) && btn("Terminée", "btn--ghost", () => setStatus(o, "done")),
-        o.status !== "cancelled" && o.status !== "done" && btn("Annuler", "btn--ghost", () => setStatus(o, "cancelled")),
+        ["paid", "confirmed"].includes(o.status) && btn("Prête à remettre", "btn--ghost", () => setStatus(o, "ready")),
+        ["new", "paid", "confirmed", "ready"].includes(o.status) && btn("Terminée", "btn--ghost", () => setStatus(o, "done")),
+        !["cancelled", "done"].includes(o.status) && btn("Annuler", "btn--ghost", () => { if (o.status === "pending_payment" || o.payment_method !== "online" || window.confirm("Commande payée en ligne : pense à la rembourser dans Stripe. Annuler quand même ?")) setStatus(o, "cancelled"); }),
         btn("Supprimer", "btn--danger", () => remove(o)))));
   }
 }
