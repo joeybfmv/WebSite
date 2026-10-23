@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Équipe technique — Administration Joɘy</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#050405">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/concerts.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin">
+  <div id="admin-bar"></div>
+  <main class="container admin-main" id="app" hidden>
+    <div id="admin-status" class="admin-status" role="status" aria-live="polite"></div>
+    <h1>Équipe technique</h1>
+    <p class="admin-item__meta">Page des techniciens : <a href="../equipe.html">equipe.html</a> (non référencée, connexion obligatoire).</p>
+
+    <h2>Fichiers</h2>
+    <div class="admin-form">
+      <div class="field"><label for="t-files">Ajouter des fichiers (PNG, JPG, PDF ou ZIP, 50 Mo max chacun)</label>
+        <input id="t-files" type="file" accept=".png,.jpg,.jpeg,.pdf,.zip,image/png,image/jpeg,application/pdf,application/zip" multiple></div>
+      <p class="admin-item__meta">Un fichier portant le même nom remplace l'ancien. Un ZIP peut être ouvert fichier par fichier par l'équipe.</p>
+    </div>
+    <div id="t-list" class="admin-list" aria-live="polite"></div>
+
+    <h2>Membres</h2>
+    <form id="t-form" class="admin-form" novalidate>
+      <div class="field"><label for="t-email">E-mail du technicien</label><input id="t-email" type="email" maxlength="200" autocomplete="off"></div>
+      <p class="admin-item__meta">Crée d'abord son compte dans Supabase (Authentication > Users > Add user, avec un mot de passe solide), puis ajoute son adresse ici.</p>
+      <div class="form-actions"><button class="btn btn--primary" type="submit">Autoriser cet accès</button></div>
+    </form>
+    <div id="t-members" class="admin-list" aria-live="polite"></div>
+  </main>
+  <script type="module" src="js/team-admin.js"></script>
+</body>
+</html>

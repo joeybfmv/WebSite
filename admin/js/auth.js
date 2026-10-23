@@ -52,7 +52,7 @@ export function mountAdminBar(root, user, active) {
     <div class="admin-bar"><div class="container admin-bar__inner">
       <a class="admin-bar__brand" href="index.html">Admin · Joɘy</a>
       <nav class="admin-bar__nav" aria-label="Administration">
-        ${link("index.html", "Accueil")}${link("concerts.html", "Concerts")}${link("setlist.html", "Setlist")}${link("requests.html", "Demandes")}${link("merch.html", "Merch")}${link("merch-orders.html", "Commandes")}${link("qr.html", "QR code")}
+        ${link("index.html", "Accueil")}${link("concerts.html", "Concerts")}${link("setlist.html", "Setlist")}${link("requests.html", "Demandes")}${link("merch.html", "Merch")}${link("merch-orders.html", "Commandes")}${link("qr.html", "QR code")}${link("team.html", "Équipe")}
         <a class="btn btn--ghost btn--small" href="../index.html" target="_blank" rel="noopener">Voir le site</a>
         <span class="admin-bar__user" title=""></span>
         <button class="btn btn--small btn--danger" type="button" id="logout-btn">Déconnexion</button>
