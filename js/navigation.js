@@ -1,6 +1,6 @@
 // js/navigation.js — en-tête + menu mobile accessible
 import { CONFIG } from "./config.js";
-import { logoHTML } from "./logo.js";
+import { merchEnabled } from "./settings.js";
 
 const LINKS = [
   { href: "index.html", label: "Accueil" },
@@ -9,8 +9,6 @@ const LINKS = [
   { href: "materiel.html", label: "Matériel & groupe" },
   { href: "contact.html", label: "Contact" }
 ];
-
-if (CONFIG.features?.merch) LINKS.splice(4, 0, { href: "merch.html", label: "Merch" });
 
 function currentPage() {
   const last = location.pathname.split("/").pop();
@@ -43,4 +41,14 @@ export function mountNavigation(root) {
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") { setOpen(false); toggle.focus(); } });
   nav.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });
   window.matchMedia("(min-width: 821px)").addEventListener("change", () => setOpen(false));
+
+  // L'onglet Merch n'apparaît que si la boutique est ouverte (réglage de l'admin).
+  merchEnabled().then((on) => {
+    const ul = nav.querySelector("ul");
+    if (!on || !ul || ul.querySelector('a[href="merch.html"]')) return;
+    const li = document.createElement("li"), a = document.createElement("a");
+    a.href = "merch.html"; a.textContent = "Merch";
+    if (page === "merch.html") a.setAttribute("aria-current", "page");
+    li.append(a); ul.insertBefore(li, ul.lastElementChild);
+  });
 }

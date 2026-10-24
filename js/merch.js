@@ -1,6 +1,7 @@
 // js/merch.js — boutique merch (masquée au public tant que CONFIG.features.merch est à false)
 import { CONFIG } from "./config.js";
 import { getClient } from "./api.js";
+import { merchEnabled } from "./settings.js";
 import { el, safeUrl, stateEmpty, stateError, stateLoading } from "./utils.js";
 
 const root = document.getElementById("merch-root");
@@ -157,7 +158,7 @@ function notice() {
 }
 
 async function main() {
-  if (!CONFIG.features?.merch) { root.replaceChildren(stateEmpty("Bientôt disponible", "La boutique merch ouvrira prochainement.")); return; }
+  if (!(await merchEnabled({ fresh: true }))) { root.replaceChildren(stateEmpty("Bientôt disponible", "La boutique merch ouvrira prochainement.")); return; }
   notice();
   root.replaceChildren(stateLoading("Chargement…"));
   try {

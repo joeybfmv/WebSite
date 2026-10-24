@@ -21,7 +21,10 @@
   <main class="container admin-main" id="app" hidden>
     <div id="admin-status" class="admin-status" role="status" aria-live="polite"></div>
     <h1>Merch</h1>
-    <p id="merch-visibility" class="admin-item__meta"></p>
+    <div class="admin-form">
+      <label class="switch" for="shop-toggle"><input id="shop-toggle" type="checkbox" disabled> Boutique visible sur le site</label>
+      <p id="shop-state" class="admin-item__meta">Chargement du réglage…</p>
+    </div>
     <form id="m-form" class="admin-form" novalidate>
       <fieldset>
         <legend id="m-legend">Ajouter un produit</legend>

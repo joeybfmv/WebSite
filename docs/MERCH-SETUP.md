@@ -50,4 +50,4 @@ Les prix sont toujours relus dans la base côté serveur : le navigateur ne peut
 Un remboursement se fait dans Stripe (le bouton « Annuler » de l'admin remet seulement le stock).
 
 ## 4. Ouvrir la boutique
-Mettre `features.merch: true` dans `js/config.js`, retirer `<meta name="robots" content="noindex">` de `merch.html`, republier.
+Exécuter `supabase/migration-settings.sql`, puis, dans l'admin > Merch, cocher « Boutique visible sur le site ». Aucun fichier à modifier : décocher referme la boutique immédiatement (onglet masqué, produits et commandes inaccessibles).

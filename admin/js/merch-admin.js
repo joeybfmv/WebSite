@@ -1,7 +1,6 @@
 // admin/js/merch-admin.js — produits merch (droits imposés par Supabase RLS)
 import { requireAdmin, mountAdminBar } from "./auth.js";
 import { getClient } from "../../js/api.js";
-import { CONFIG } from "../../js/config.js";
 import { el, safeUrl, stateEmpty, stateError, stateLoading } from "../../js/utils.js";
 
 document.documentElement.classList.remove("no-js");
@@ -29,9 +28,6 @@ const parseVariants = (text) => {
 const MODE = { onsite: "Sur place", external: "Boutique externe", cart: "Panier du site" };
 let products = [], editing = null, imgs = []; // imgs : { url?, blob?, preview }
 
-$("merch-visibility").textContent = CONFIG.features?.merch
-  ? "L'onglet Merch est visible par le public."
-  : "L'onglet Merch est actuellement masqué au public (js/config.js : features.merch = false). Tu peux déjà préparer tes produits.";
 
 let timer;
 function notify(type, text) {
@@ -39,6 +35,23 @@ function notify(type, text) {
   clearTimeout(timer);
   if (type === "ok") timer = setTimeout(() => $("admin-status").replaceChildren(), 4000);
 }
+
+/* ---------- Ouverture / fermeture de la boutique ---------- */
+const shop = $("shop-toggle"), shopState = $("shop-state");
+const showShop = (on) => { shopState.textContent = on ? "Boutique OUVERTE : l'onglet Merch est visible par tout le monde." : "Boutique FERMÉE : l'onglet Merch est masqué, les produits et les commandes sont inaccessibles au public. Tu peux préparer tes produits."; };
+{
+  const { data, error } = await sb.from("site_settings").select("value").eq("key", "merch_enabled").maybeSingle();
+  if (error) shopState.textContent = "Réglage indisponible : " + error.message + " (migration-settings.sql exécutée ?)";
+  else { shop.checked = data?.value === true; shop.disabled = false; showShop(shop.checked); }
+}
+shop.addEventListener("change", async () => {
+  const want = shop.checked; shop.disabled = true;
+  const { error } = await sb.from("site_settings").upsert({ key: "merch_enabled", value: want }, { onConflict: "key" });
+  shop.disabled = false;
+  if (error) { shop.checked = !want; return notify("err", "Impossible de modifier le réglage : " + error.message); }
+  try { sessionStorage.removeItem("joey_settings_v1"); } catch { /* ignoré */ }
+  showShop(want); notify("ok", want ? "Boutique ouverte au public." : "Boutique masquée.");
+});
 
 /* ---------- Images ---------- */
 const pathOf = (url) => { const m = `/object/public/${BUCKET}/`; const i = url ? url.indexOf(m) : -1; return i === -1 ? null : decodeURIComponent(url.slice(i + m.length).split("?")[0]); };
