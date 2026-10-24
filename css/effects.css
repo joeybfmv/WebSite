@@ -61,3 +61,9 @@ body { animation: pageIn .6s var(--ease); }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
   .marquee__track { width: auto; flex-wrap: wrap; }
 }
+
+.brand { display: inline-flex; align-items: center; }
+.brand img { display: block; height: 38px; width: auto; }
+.hero__emblem { display: block; margin: 0 auto var(--sp-4); width: clamp(96px, 14vw, 140px); height: auto; filter: drop-shadow(0 0 18px rgba(217,25,43,.55)); animation: emblemIn 1.2s var(--ease) both, emblemFloat 6s ease-in-out 1.2s infinite; }
+@keyframes emblemIn { from { opacity: 0; scale: .8; filter: blur(12px); } to { opacity: 1; scale: 1; } }
+@keyframes emblemFloat { 50% { translate: 0 -8px; } }

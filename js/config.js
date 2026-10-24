@@ -10,7 +10,7 @@ export const CONFIG = {
   tagline: "Tribute de BFMV (Bullet for My Valentine)",
   description:
     "Joɘy — guitariste et projet tribute à Bullet for My Valentine. Concerts, setlist, matériel et contact.",
-  siteUrl: "https://waywardship.github.io/WebSite/",
+  siteUrl: "https://joeybfmv.github.io/WebSite/",
   contactPageUrl: "https://waywardship.github.io/WebSite/contact.html",
 
   contact: {

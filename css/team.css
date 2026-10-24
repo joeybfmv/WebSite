@@ -1,0 +1,8 @@
+/* team.css — espace équipe technique */
+.team-login { max-width: 440px; margin-inline: auto; padding: var(--sp-5); border: 1px solid var(--border); background: var(--c-ink); }
+.team-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-5); }
+.team-file { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; justify-content: space-between; padding: var(--sp-4); border: 1px solid var(--border); background: var(--c-ink); margin-bottom: var(--sp-3); }
+.team-file h2 { margin: 0; font-size: 1.15rem; }
+.team-file__meta { margin: 0; color: var(--text-muted, #b9aeb0); font-size: var(--fs-sm); word-break: break-all; }
+.team-file__actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.team-zip { margin: 0 0 var(--sp-4) var(--sp-4); border-left: 3px solid var(--c-blood); padding-left: var(--sp-4); }

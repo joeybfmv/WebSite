@@ -46,7 +46,7 @@ async function zipContent(file, holder) {
 
 async function showFiles() {
   const out = el("div");
-  root.replaceChildren(el("div", { class: "team-bar" }, el("p", { text: "Connecté à l'espace équipe." }), btn("Se déconnecter", "btn--ghost", async () => { await sb.auth.signOut(); showLogin(); })), out);
+  root.replaceChildren(el("div", { class: "team-bar" }, el("p", { text: "Connecté à l'espace équipe." }), el("a", { class: "btn btn--small btn--primary", href: "equipe-editeur.html", text: "Éditeur de documents" }), btn("Se déconnecter", "btn--ghost", async () => { await sb.auth.signOut(); showLogin(); })), out);
   const { data, error } = await sb.storage.from(BUCKET).list("", { limit: 200, sortBy: { column: "name", order: "asc" } });
   if (error) { out.append(stateError("Impossible de charger les fichiers : " + error.message)); return; }
   const files = (data || []).filter((f) => f.id && !f.name.startsWith("."));
