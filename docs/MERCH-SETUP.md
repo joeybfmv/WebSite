@@ -7,6 +7,7 @@ Tout est livré **désactivé par défaut** : le public ne voit rien tant que `j
 Dans Supabase > SQL Editor, exécuter dans cet ordre (une fois chacun) :
 1. `supabase/migration-merch.sql`
 2. `supabase/migration-merch-v2.sql`
+3. `supabase/migration-merch-v3.sql` (catégories et prix barrés)
 
 Ensuite, dans l'admin : Merch (produits, variantes, badges), Commandes, QR code.
 Le **stock baisse automatiquement** quand une commande devient « Payée » ou « Confirmée », et **remonte** si elle est annulée.

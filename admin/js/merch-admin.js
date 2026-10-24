@@ -26,6 +26,8 @@ const parseVariants = (text) => {
   return out.length > 20 ? { error: "20 variantes maximum." } : { options: out };
 };
 const MODE = { onsite: "Sur place", external: "Boutique externe", cart: "Panier du site" };
+const stockLeft = (p) => ((p.options || []).length ? ((p.options).every((o) => Number.isInteger(o.stock)) ? p.options.reduce((n, o) => n + o.stock, 0) : null) : (Number.isInteger(p.stock) ? p.stock : null));
+const parseMoney = (t) => { const v = t.trim(); return v === "" ? null : Number(v.replace(",", ".")); };
 let products = [], editing = null, imgs = []; // imgs : { url?, blob?, preview }
 
 
@@ -104,21 +106,43 @@ async function load() {
 }
 function render() {
   const list = $("m-list"); list.replaceChildren();
+  $("m-cats").replaceChildren(...[...new Set(products.map((p) => p.category).filter(Boolean))].map((c) => el("option", { value: c })));
   if (!products.length) { list.append(stateEmpty("Aucun produit", "Ajoutez votre premier article avec le formulaire ci-dessus.")); return; }
+  const q = $("m-search").value.trim().toLowerCase();
+  let shown = 0;
   products.forEach((p, i) => {
+    if (q && !`${p.name} ${p.category || ""}`.toLowerCase().includes(q)) return;
+    shown++;
+    const left = stockLeft(p);
     const btn = (text, cls, fn, disabled = false) => { const b = el("button", { class: `btn btn--small ${cls}`, type: "button", text }); b.disabled = disabled; b.addEventListener("click", fn); return b; };
     const cover = safeUrl((p.images || [])[0]);
     list.append(el("article", { class: `admin-item${p.is_published ? " admin-item--published" : ""}` },
       cover ? el("img", { class: "admin-cover", src: cover, alt: "" }) : null,
-      el("div", {}, el("span", { class: `badge${p.is_published ? " badge--accent" : ""}`, text: p.is_published ? "Visible" : "Masqué" })),
+      el("div", {}, el("span", { class: `badge${p.is_published ? " badge--accent" : ""}`, text: p.is_published ? "Visible" : "Masqué" }),
+        left === 0 ? el("span", { class: "badge badge--alert", text: "Épuisé" }) : (left !== null && left <= 5 ? el("span", { class: "badge badge--alert", text: `Stock faible (${left})` }) : null)),
       el("h2", { text: p.name }),
-      el("p", { class: "admin-item__meta", text: `${eur(p.price)} · ${MODE[p.sale_mode]} · ${(p.options || []).length ? "variantes : " + p.options.map((o) => `${o.label}${Number.isInteger(o.stock) ? ` (${o.stock})` : ""}`).join(", ") : Number.isInteger(p.stock) ? `stock : ${p.stock}` : "stock non suivi"}` }),
+      el("p", { class: "admin-item__meta", text: `${p.category ? p.category + " · " : ""}${eur(p.price)}${Number(p.compare_price) > Number(p.price) ? ` (avant ${eur(p.compare_price)})` : ""} · ${MODE[p.sale_mode]} · ${(p.options || []).length ? "variantes : " + p.options.map((o) => `${o.label}${Number.isInteger(o.stock) ? ` (${o.stock})` : ""}`).join(", ") : Number.isInteger(p.stock) ? `stock : ${p.stock}` : "stock non suivi"}` }),
       el("div", { class: "admin-item__actions" },
-        btn("↑", "btn--ghost", () => move(i, -1), i === 0), btn("↓", "btn--ghost", () => move(i, 1), i === products.length - 1),
+        btn("↑", "btn--ghost", () => move(i, -1), i === 0 || !!q), btn("↓", "btn--ghost", () => move(i, 1), i === products.length - 1 || !!q),
         btn("Modifier", "", () => startEdit(p)),
+        btn("Dupliquer", "btn--ghost", () => duplicate(p)),
         btn(p.is_published ? "Masquer" : "Afficher", "btn--ghost", () => patch(p, { is_published: !p.is_published })),
         btn("Supprimer", "btn--danger", () => remove(p)))));
   });
+  if (q && !shown) list.append(stateEmpty("Aucun résultat", "Aucun produit ne correspond à cette recherche."));
+}
+async function duplicate(p) {
+  notify("ok", "Duplication en cours…");
+  try {
+    const urls = [];
+    for (const u of p.images || []) { try { const r = await fetch(u); if (r.ok) urls.push(await uploadImage(await r.blob())); } catch { /* photo ignorée */ } }
+    const row = { name: `Copie de ${p.name}`.slice(0, 160), description: p.description, price: p.price, stock: p.stock, options: p.options || [], badge: p.badge || "auto", sale_mode: p.sale_mode, external_url: p.external_url, images: urls, is_published: false, position: products.reduce((m, x) => Math.max(m, x.position || 0), 0) + 1 };
+    if ("category" in p) row.category = p.category;
+    if ("compare_price" in p) row.compare_price = p.compare_price;
+    const { error } = await sb.from("merch_products").insert(row);
+    if (error) throw new Error(error.message);
+    notify("ok", "Copie créée (masquée). Clique sur « Modifier » pour l'ajuster."); await load();
+  } catch (x) { notify("err", "Duplication impossible : " + x.message); }
 }
 async function patch(p, values) {
   const { error } = await sb.from("merch_products").update(values).eq("id", p.id);
@@ -144,7 +168,7 @@ function toggleUrl() { $("m-url-field").hidden = form.elements.sale_mode.value !
 form.elements.sale_mode.addEventListener("change", toggleUrl);
 function startEdit(p) {
   editing = p; const F = form.elements;
-  F.name.value = p.name; F.price.value = String(p.price).replace(".", ","); F.stock.value = p.stock ?? ""; F.description.value = p.description || "";
+  F.name.value = p.name; F.price.value = String(p.price).replace(".", ","); F.stock.value = p.stock ?? ""; F.description.value = p.description || ""; F.category.value = p.category || ""; F.compare_price.value = p.compare_price ? String(p.compare_price).replace(".", ",") : "";
   F.variants.value = (p.options || []).map((o) => (Number.isInteger(o.stock) ? `${o.label}; ${o.stock}` : o.label)).join("\n"); F.badge.value = p.badge || "auto"; F.sale_mode.value = p.sale_mode; F.external_url.value = p.external_url || ""; F.is_published.checked = !!p.is_published;
   imgs = (p.images || []).map((url) => ({ url, preview: url })); renderImages(); toggleUrl();
   $("m-legend").textContent = "Modifier le produit"; $("m-save").textContent = "Enregistrer"; $("m-cancel").hidden = false;
@@ -165,6 +189,8 @@ form.addEventListener("submit", async (e) => {
   if (name.length < 2) return void (err.textContent = "Le nom est obligatoire (2 caractères minimum).");
   if (!Number.isFinite(price) || price < 0 || price > 99999) return void (err.textContent = "Indiquez un prix valide (ex : 20 ou 17,50).");
   if (stock !== null && (!Number.isInteger(stock) || stock < 0)) return void (err.textContent = "Le stock doit être un nombre entier (ou laissé vide).");
+  const category = F.category.value.trim(), compare = parseMoney(F.compare_price.value);
+  if (compare !== null && (!Number.isFinite(compare) || compare <= price || compare > 99999)) return void (err.textContent = "L'ancien prix barré doit être un nombre supérieur au prix actuel (ou laissé vide).");
   const pv = parseVariants(F.variants.value); if (pv.error) return void (err.textContent = pv.error);
   if (mode === "external" && !/^https:\/\/\S+$/i.test(url)) return void (err.textContent = "Indiquez le lien de la boutique, en https://.");
   const btn = $("m-save"); btn.disabled = true;
@@ -172,14 +198,18 @@ form.addEventListener("submit", async (e) => {
     const urls = [];
     for (const im of imgs) urls.push(im.url || await uploadImage(im.blob));
     const row = { name, description: F.description.value.trim() || null, price, stock: pv.options.length ? null : stock, options: pv.options, badge: F.badge.value, sale_mode: mode, external_url: mode === "external" ? url : null, images: urls, is_published: F.is_published.checked };
+    // Les colonnes catégorie / prix barré viennent de migration-merch-v3.sql : on ne les envoie que si elles servent.
+    if (category || (editing && "category" in editing)) row.category = category || null;
+    if (compare !== null || (editing && "compare_price" in editing)) row.compare_price = compare;
     const { error } = editing
       ? await sb.from("merch_products").update(row).eq("id", editing.id)
       : await sb.from("merch_products").insert({ ...row, position: products.reduce((m, p) => Math.max(m, p.position || 0), 0) + 1 });
     if (error) throw new Error(error.message);
     if (editing) await removeFiles((editing.images || []).filter((u) => !urls.includes(u)));
     notify("ok", editing ? "Produit modifié." : "Produit ajouté."); resetForm(); await load();
-  } catch (x) { err.textContent = "Enregistrement impossible : " + x.message; }
+  } catch (x) { err.textContent = "Enregistrement impossible : " + x.message + (/category|compare_price/.test(x.message) ? " (migration-merch-v3.sql exécutée ?)" : ""); }
   btn.disabled = false;
 });
 
+$("m-search").addEventListener("input", render);
 toggleUrl(); await load();

@@ -33,6 +33,10 @@
           <div class="field"><label for="m-price">Prix (€) *</label><input id="m-price" name="price" type="text" inputmode="decimal" placeholder="ex : 20 ou 17,50"></div>
           <div class="field"><label for="m-stock">Stock (facultatif)</label><input id="m-stock" name="stock" type="text" inputmode="numeric" placeholder="Vide = non suivi"></div>
         </div>
+        <div class="form-grid">
+          <div class="field"><label for="m-cat">Catégorie (facultatif)</label><input id="m-cat" name="category" type="text" maxlength="40" list="m-cats" placeholder="ex : T-shirts"><datalist id="m-cats"></datalist></div>
+          <div class="field"><label for="m-compare">Ancien prix barré (€, facultatif)</label><input id="m-compare" name="compare_price" type="text" inputmode="decimal" placeholder="ex : 25 → affiche 25 € barré"></div>
+        </div>
         <div class="field"><label for="m-desc">Description</label><textarea id="m-desc" name="description" rows="3" maxlength="2000"></textarea></div>
         <div class="field"><label for="m-variants">Variantes (tailles, couleurs…) : une par ligne, stock facultatif après « ; »</label>
           <textarea id="m-variants" name="variants" rows="4" placeholder="S; 5&#10;M; 8&#10;L"></textarea>
@@ -62,6 +66,7 @@
         <button class="btn btn--ghost" type="button" id="m-cancel" hidden>Annuler</button>
       </div>
     </form>
+    <div class="admin-toolbar"><div class="field"><label for="m-search">Rechercher un produit</label><input id="m-search" type="search" placeholder="Nom ou catégorie"></div></div>
     <div id="m-list" class="admin-list" aria-live="polite"></div>
   </main>
   <script type="module" src="js/merch-admin.js"></script>

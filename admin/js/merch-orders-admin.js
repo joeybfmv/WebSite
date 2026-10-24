@@ -33,8 +33,9 @@ async function remove(o) {
   if (error) return notify("err", "Suppression impossible : " + error.message); notify("ok", "Commande supprimée."); await load();
 }
 function render() {
-  const f = $("o-filter").value, list = $("o-list");
-  const shown = rows.filter((o) => f === "all" || o.status === f); list.replaceChildren();
+  const list = $("o-list"), shown = filtered(); list.replaceChildren();
+  const sum = shown.filter((o) => o.status !== "cancelled").reduce((n, o) => n + Number(o.total || 0), 0);
+  $("o-summary").textContent = `${shown.length} commande${shown.length > 1 ? "s" : ""} affichée${shown.length > 1 ? "s" : ""} · ${eur(sum)} (hors annulées)`;
   if (!shown.length) { list.append(stateEmpty("Aucune commande", "Rien à afficher pour ce filtre.")); return; }
   for (const o of shown) {
     const btn = (text, cls, fn) => { const b = el("button", { class: `btn btn--small ${cls}`, type: "button", text }); b.addEventListener("click", fn); return b; };
@@ -54,5 +55,23 @@ function render() {
         btn("Supprimer", "btn--danger", () => remove(o)))));
   }
 }
+function filtered() {
+  const f = $("o-filter").value, q = $("o-search").value.trim().toLowerCase();
+  return rows.filter((o) => (f === "all" || o.status === f) && (!q || `${o.name} ${o.email}`.toLowerCase().includes(q)));
+}
+// Une cellule qui commence par = + - @ serait lue comme une formule par Excel : on la neutralise.
+const cell = (v) => { let t = String(v ?? ""); if (/^[=+\-@\t\r]/.test(t)) t = "'" + t; return `"${t.replace(/"/g, '""')}"`; };
+function exportCsv() {
+  const shown = filtered();
+  if (!shown.length) return notify("err", "Rien à exporter pour ce filtre.");
+  const head = ["Date", "Nom", "E-mail", "Statut", "Paiement", "Articles", "Total (€)", "Message"];
+  const lines = shown.map((o) => [`${formatDate(o.created_at)} ${formatTime(o.created_at)}`, o.name, o.email, LABEL[o.status] || o.status, o.payment_method === "online" ? "en ligne" : "à la remise",
+    (o.items || []).map((i) => `${i.qty} × ${i.name}${i.variant ? ` (${i.variant})` : ""}`).join(" + "), String(o.total ?? "").replace(".", ","), o.message || ""].map(cell).join(";"));
+  const blob = new Blob(["\ufeff" + [head.map(cell).join(";"), ...lines].join("\r\n")], { type: "text/csv;charset=utf-8" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `commandes-merch-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
 $("o-filter").addEventListener("change", render);
+$("o-search").addEventListener("input", render);
+$("o-export").addEventListener("click", exportCsv);
 await load();

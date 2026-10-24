@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>QR code merch — Administration Joɘy</title>
+  <title>QR codes — Administration Joɘy</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#050405">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self'; object-src 'none'">
@@ -19,21 +19,19 @@
 <body class="admin">
   <div id="admin-bar" class="no-print"></div>
   <main class="container admin-main" id="app" hidden>
-    <h1 class="no-print">QR code du merch</h1>
+    <h1 class="no-print">QR codes du site</h1>
+    <p class="no-print">Un QR code par page du site, à imprimer ou à télécharger (SVG pour l'impression, PNG pour le web).</p>
     <div class="admin-form no-print">
-      <div class="field"><label for="q-url">Adresse à ouvrir quand on scanne</label><input id="q-url" type="url"></div>
+      <div class="field">
+        <label for="q-base">Adresse du site (le QR code ouvrira cette adresse + le nom de la page)</label>
+        <input id="q-base" type="url" placeholder="https://…">
+      </div>
       <div class="form-actions">
-        <button class="btn btn--primary" type="button" id="q-print">Imprimer l'affiche</button>
-        <button class="btn btn--ghost" type="button" id="q-svg">Télécharger en SVG</button>
-        <button class="btn btn--ghost" type="button" id="q-png">Télécharger en PNG</button>
+        <button class="btn btn--primary" type="button" id="q-print-all">Imprimer toutes les affiches</button>
       </div>
       <p id="q-error" class="error" role="alert"></p>
     </div>
-    <section class="qr-poster" aria-label="Aperçu de l'affiche">
-      <h2>Merch</h2><p>Scanne pour voir la boutique</p>
-      <div id="q-box"></div>
-      <p id="q-text" class="qr-url"></p><p>Joɘy · Tribute de Bullet For My Valentine</p>
-    </section>
+    <div id="q-groups"></div>
   </main>
   <script type="module" src="js/qr.js"></script>
 </body>
