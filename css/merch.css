@@ -62,3 +62,11 @@ body.cart-open { overflow: hidden; }
 
 .merch-toast { position: fixed; left: 50%; bottom: var(--sp-6); z-index: 90; transform: translate(-50%, 16px); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; padding: .7rem 1.1rem; border: 1px solid var(--c-crimson); background: var(--c-ink); max-width: min(92vw, 420px); text-align: center; }
 .merch-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------- v4 : codes promo ---------- */
+.cart-promo { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; margin-block: var(--sp-4); }
+.cart-promo input { flex: 1 1 160px; min-height: 44px; text-transform: uppercase; letter-spacing: .08em; }
+.cart-promo__ok { flex: 1 1 auto; margin: 0; color: #b6f0c0; }
+.cart-promo__err { flex-basis: 100%; margin: 0; color: var(--c-ember); font-size: var(--fs-sm); }
+.cart-sum { text-align: right; margin: 0; color: var(--text-muted); }
+.cart-sum--promo { color: #b6f0c0; }
