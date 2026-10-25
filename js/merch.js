@@ -12,6 +12,7 @@ const eur = (n) => new Intl.NumberFormat("fr-FR", { style: "currency", currency:
 const KEY = "joey_merch_cart";
 const view = { cat: "", sort: "order", hideSold: false };
 let sb = null, products = [], cart = readCart(), gridBox = null, lastFocus = null, toastTimer;
+let promo = null, promoDraft = "", promoMsg = ""; // promo : { code, discount, label } — le montant réel est recalculé par le serveur à la commande
 
 function readCart() {
   try {
@@ -77,14 +78,14 @@ function addToCart(p, variant) {
   if (max !== null && next > max) return say("Stock maximum atteint pour cet article.");
   if (next > 20) return say("20 exemplaires maximum par article.");
   if (line) line.qty = next; else cart.push({ id: p.id, qty: 1, variant: variant || "" });
-  writeCart(); renderCart();
+  writeCart(); renderCart(); refreshPromo();
   say(`${p.name}${variant ? ` (${variant})` : ""} ajouté au panier`);
 }
 function setQty(item, qty) {
   const p = products.find((x) => x.id === item.id), max = p ? stockOf(p, item.variant) : null;
   if (qty < 1) cart = cart.filter((i) => i !== item);
   else if (qty <= 20 && (max === null || qty <= max)) item.qty = qty;
-  writeCart(); renderCart();
+  writeCart(); renderCart(); refreshPromo();
 }
 
 /* ---------- Photos en grand ---------- */
@@ -197,13 +198,54 @@ function toolbar() {
   return el("div", { class: "merch-toolbar" }, chips, el("div", { class: "merch-toolbar__side" }, sold, sort));
 }
 
+/* ---------- Codes promo (vérifiés par le serveur) ---------- */
+const promosOn = () => CONFIG.features?.promoCodes === true;
+const cartItems = () => cart.map(({ id, qty, variant }) => ({ id, qty, variant: variant || null }));
+async function checkPromo(code) {
+  try {
+    const { data, error } = await sb.rpc("merch_promo_preview", { p_code: code, p_items: cartItems() });
+    if (error || !data) throw error || new Error("vide");
+    return data;
+  } catch (e) { console.warn(e); return { ok: false, message: "Impossible de vérifier le code pour le moment." }; }
+}
+const useResult = (r) => { if (r.ok) { promo = { code: r.code, discount: Number(r.discount), label: r.label }; promoMsg = ""; } else { promo = null; promoMsg = r.message || "Code promo invalide."; } };
+/** Le panier a changé : on refait vérifier le code (pourcentage, minimum d'achat…). */
+async function refreshPromo() {
+  if (!promo) return;
+  if (!cart.length) { promo = null; promoMsg = ""; return renderCart(); }
+  useResult(await checkPromo(promo.code)); renderCart();
+}
+const discountOf = (total) => (promo ? Math.min(promo.discount, total) : 0);
+function promoBox() {
+  const box = el("div", { class: "cart-promo" });
+  if (promo) {
+    const rm = el("button", { class: "btn btn--small btn--ghost", type: "button", text: "Retirer" });
+    rm.addEventListener("click", () => { promo = null; promoDraft = ""; promoMsg = ""; renderCart(); });
+    box.append(el("p", { class: "cart-promo__ok", role: "status", text: `Code ${promo.code} appliqué (${promo.label})` }), rm);
+    return box;
+  }
+  const input = el("input", { id: "o-promo", type: "text", maxlength: "30", autocomplete: "off", autocapitalize: "characters", spellcheck: "false", placeholder: "Code promo", "aria-label": "Code promo", value: promoDraft });
+  const ok = el("button", { class: "btn btn--small btn--ghost", type: "button", text: "Appliquer" });
+  const go = async () => {
+    const code = input.value.trim(); promoDraft = code; if (!code) return;
+    ok.disabled = true; ok.textContent = "Vérification…";
+    useResult(await checkPromo(code)); if (promo) promoDraft = ""; renderCart();
+  };
+  ok.addEventListener("click", go);
+  input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); go(); } });
+  box.append(input, ok);
+  if (promoMsg) box.append(el("p", { class: "cart-promo__err", role: "status", text: promoMsg }));
+  return box;
+}
+
 /* ---------- Panier : affichage ---------- */
 function renderCart() {
   const n = cart.reduce((s, i) => s + i.qty, 0);
   const active = cartBox.contains(document.activeElement) ? document.activeElement.getAttribute("aria-label") : null;
   let total = 0;
   for (const item of cart) { const p = products.find((x) => x.id === item.id); if (p) total += Number(p.price) * item.qty; }
-  toggle.textContent = n ? `Panier (${n}) · ${eur(total)}` : "Panier (0)";
+  const off = discountOf(total);
+  toggle.textContent = n ? `Panier (${n}) · ${eur(total - off)}` : "Panier (0)";
   cartBox.replaceChildren(cartHeader("Mon panier"));
   if (!cart.length) { cartBox.append(el("p", { text: "Votre panier est vide." })); return; }
   for (const item of cart) {
@@ -213,7 +255,9 @@ function renderCart() {
     cartBox.append(el("div", { class: "cart-line" }, el("span", { text: `${label} — ${eur(p.price)}` }),
       el("span", { class: "cart-line__qty" }, btn("−", `Retirer un ${label}`, () => setQty(item, item.qty - 1)), el("strong", { text: String(item.qty) }), btn("+", `Ajouter un ${label}`, () => setQty(item, item.qty + 1)), btn("✕", `Supprimer ${label}`, () => setQty(item, 0)))));
   }
-  cartBox.append(el("p", { class: "cart-total", text: `Total : ${eur(total)}` }), el("p", { class: "cart-pickup", text: "Retrait au stand merch, lors des concerts." }), orderForm());
+  if (promosOn() && sb) cartBox.append(promoBox());
+  if (off > 0) cartBox.append(el("p", { class: "cart-sum", text: `Sous-total : ${eur(total)}` }), el("p", { class: "cart-sum cart-sum--promo", text: `Code ${promo.code} : −${eur(off)}` }));
+  cartBox.append(el("p", { class: "cart-total", text: `Total : ${eur(total - off)}` }), el("p", { class: "cart-pickup", text: "Retrait au stand merch, lors des concerts." }), orderForm());
   if (active) [...cartBox.querySelectorAll("button")].find((b) => b.getAttribute("aria-label") === active)?.focus();
 }
 
@@ -224,7 +268,8 @@ function receipt() {
     total += Number(p.price) * item.qty;
     return el("li", { text: `${item.qty} × ${p.name}${item.variant ? ` (${item.variant})` : ""} — ${eur(Number(p.price) * item.qty)}` });
   }).filter(Boolean);
-  return el("div", { class: "cart-receipt" }, el("ul", {}, lines), el("p", { class: "cart-total", text: `Total : ${eur(total)}` }));
+  const off = discountOf(total);
+  return el("div", { class: "cart-receipt" }, el("ul", {}, lines), off > 0 ? el("p", { class: "cart-sum cart-sum--promo", text: `Code ${promo.code} : −${eur(off)}` }) : null, el("p", { class: "cart-total", text: `Total : ${eur(total - off)}` }));
 }
 
 function orderForm() {
@@ -252,19 +297,22 @@ function orderForm() {
     submit.disabled = true; status.textContent = "Envoi…";
     try {
       if (method && method.value === "online") {
-        const res = await fetch(`${CONFIG.supabase.url}/functions/v1/merch-checkout`, { method: "POST", headers: { "Content-Type": "application/json", apikey: CONFIG.supabase.anonKey }, body: JSON.stringify({ name, email, message: msg.value.trim() || null, items }) });
+        const res = await fetch(`${CONFIG.supabase.url}/functions/v1/merch-checkout`, { method: "POST", headers: { "Content-Type": "application/json", apikey: CONFIG.supabase.anonKey }, body: JSON.stringify({ name, email, message: msg.value.trim() || null, items, ...(promo ? { promo_code: promo.code } : {}) }) });
         const data = await res.json().catch(() => ({}));
         if (!res.ok || typeof data.url !== "string" || !data.url.startsWith("https://checkout.stripe.com/")) throw new Error(data.error || "Paiement indisponible, réessayez plus tard.");
         window.location.href = data.url; return;
       }
-      const { error } = await sb.from("merch_orders").insert({ name, email, message: msg.value.trim() || null, items });
+      const { error } = await sb.from("merch_orders").insert({ name, email, message: msg.value.trim() || null, items, ...(promo ? { promo_code: promo.code } : {}) });
       if (error) throw new Error(error.message || "Envoi impossible, réessayez plus tard.");
       const summary = receipt();
-      cart = []; writeCart();
+      cart = []; writeCart(); promo = null; promoDraft = ""; promoMsg = "";
       cartBox.replaceChildren(cartHeader("Merci !"), el("p", { text: "Votre demande est bien enregistrée. Un e-mail de confirmation vous est envoyé, et je vous recontacte très vite." }), summary, el("p", { class: "cart-pickup", text: "Retrait et règlement au stand merch, lors d'un prochain concert." }));
       toggle.textContent = "Panier (0)";
       cartBox.querySelector("[data-close]")?.focus();
-    } catch (err) { status.textContent = err.message; }
+    } catch (err) {
+      status.textContent = err.message;
+      if (promo && /promo|code est valable/i.test(err.message)) { promoMsg = err.message; promo = null; setTimeout(renderCart, 1500); }
+    }
     submit.disabled = false;
   });
   return form;

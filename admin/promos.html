@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Codes promo — Administration Joɘy</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#050405">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self'; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/reset.css">
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/concerts.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin">
+  <div id="admin-bar"></div>
+  <main class="container admin-main" id="app" hidden>
+    <div id="admin-status" class="admin-status" role="status" aria-live="polite"></div>
+    <h1>Codes promo</h1>
+    <p><a class="btn btn--ghost btn--small" href="merch.html">← Retour au merch</a></p>
+    <form id="p-form" class="admin-form" novalidate>
+      <fieldset>
+        <legend>Créer un code</legend>
+        <div class="form-grid">
+          <div class="field"><label for="p-code">Code *</label><input id="p-code" name="code" type="text" maxlength="30" autocomplete="off" autocapitalize="characters" placeholder="ex : BIENVENUE10"></div>
+          <div class="field"><label for="p-kind">Type de réduction</label>
+            <select id="p-kind" name="kind"><option value="percent">Pourcentage (%)</option><option value="amount">Montant fixe (€)</option></select></div>
+          <div class="field"><label for="p-value" id="p-value-label">Réduction (%) *</label><input id="p-value" name="value" type="text" inputmode="decimal" placeholder="ex : 10"></div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label for="p-min">Achat minimum (€, facultatif)</label><input id="p-min" name="min_total" type="text" inputmode="decimal" placeholder="ex : 30"></div>
+          <div class="field"><label for="p-max">Nombre d'utilisations max (facultatif)</label><input id="p-max" name="max_uses" type="text" inputmode="numeric" placeholder="Vide = illimité"></div>
+          <div class="field"><label for="p-exp">Valable jusqu'au (facultatif)</label><input id="p-exp" name="expires" type="date"></div>
+        </div>
+      </fieldset>
+      <p id="p-error" class="error" role="alert"></p>
+      <div class="form-actions">
+        <button class="btn btn--primary" type="submit" id="p-save">Créer le code</button>
+        <button class="btn btn--ghost" type="button" id="p-gen">Générer un code au hasard</button>
+      </div>
+    </form>
+    <div id="p-list" class="admin-list" aria-live="polite"></div>
+  </main>
+  <script type="module" src="js/promos-admin.js"></script>
+</body>
+</html>

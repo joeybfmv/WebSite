@@ -45,6 +45,7 @@ function render() {
       el("h2", { text: `${o.name} — ${eur(o.total)}` }),
       el("p", { class: "admin-item__meta", text: `${o.email} · ${o.payment_method === "online" ? "paiement en ligne" : "réservation (paiement à la remise)"}` }),
       el("ul", {}, (o.items || []).map((i) => el("li", { text: `${i.qty} × ${i.name}${i.variant ? ` (${i.variant})` : ""} — ${eur(i.price)}` }))),
+      Number(o.discount) > 0 ? el("p", { class: "admin-item__meta", text: `Code promo ${o.promo_code} : −${eur(o.discount)}` }) : null,
       o.message ? el("p", { class: "req-msg", text: o.message }) : null,
       el("div", { class: "admin-item__actions" },
         el("a", { class: "btn btn--small btn--primary", href: `mailto:${o.email}?subject=${subject}`, text: "Répondre par e-mail" }),
@@ -64,9 +65,9 @@ const cell = (v) => { let t = String(v ?? ""); if (/^[=+\-@\t\r]/.test(t)) t = "
 function exportCsv() {
   const shown = filtered();
   if (!shown.length) return notify("err", "Rien à exporter pour ce filtre.");
-  const head = ["Date", "Nom", "E-mail", "Statut", "Paiement", "Articles", "Total (€)", "Message"];
+  const head = ["Date", "Nom", "E-mail", "Statut", "Paiement", "Articles", "Code promo", "Remise (€)", "Total (€)", "Message"];
   const lines = shown.map((o) => [`${formatDate(o.created_at)} ${formatTime(o.created_at)}`, o.name, o.email, LABEL[o.status] || o.status, o.payment_method === "online" ? "en ligne" : "à la remise",
-    (o.items || []).map((i) => `${i.qty} × ${i.name}${i.variant ? ` (${i.variant})` : ""}`).join(" + "), String(o.total ?? "").replace(".", ","), o.message || ""].map(cell).join(";"));
+    (o.items || []).map((i) => `${i.qty} × ${i.name}${i.variant ? ` (${i.variant})` : ""}`).join(" + "), o.promo_code || "", Number(o.discount) > 0 ? String(o.discount).replace(".", ",") : "", String(o.total ?? "").replace(".", ","), o.message || ""].map(cell).join(";"));
   const blob = new Blob(["\ufeff" + [head.map(cell).join(";"), ...lines].join("\r\n")], { type: "text/csv;charset=utf-8" });
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `commandes-merch-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 2000);
