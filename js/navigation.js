@@ -1,5 +1,4 @@
 // js/navigation.js — en-tête + menu mobile accessible
-import { CONFIG } from "./config.js";
 import { merchEnabled } from "./settings.js";
 
 const LINKS = [
@@ -22,7 +21,6 @@ export function mountNavigation(root) {
   root.innerHTML = `
     <header class="site-header">
       <div class="container header-inner">
-        <a class="brand" href="index.html" aria-label="${CONFIG.stageName} — accueil"><img src="assets/images/logo/joey-logo-floral.svg" alt="${CONFIG.stageName}" width="140" height="40"></a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Ouvrir le menu">
           <span></span><span></span><span></span>
         </button>

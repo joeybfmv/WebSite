@@ -31,7 +31,7 @@ export const CONFIG = {
 
   features: {
     onlinePayment: false, // passer à true seulement après la mise en place de Stripe (voir docs/MERCH-SETUP.md)
-    promoCodes: false // passer à true après avoir exécuté supabase/migration-merch-v4.sql (champ « code promo » dans le panier)
+    promoCodes: true // passer à true après avoir exécuté supabase/migration-merch-v4.sql (champ « code promo » dans le panier)
   },
 
   officialLinks: {
