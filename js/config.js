@@ -11,7 +11,7 @@ export const CONFIG = {
   description:
     "Joɘy — guitariste et projet tribute à Bullet for My Valentine. Concerts, setlist, matériel et contact.",
   siteUrl: "https://joeybfmv.github.io/WebSite/",
-  contactPageUrl: "https://waywardship.github.io/WebSite/contact.html",
+  contactPageUrl: "https://joeybfmv.github.io/WebSite/contact.html",
 
   contact: {
     phone: "07 69 34 10 08",

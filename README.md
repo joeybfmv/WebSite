@@ -62,7 +62,7 @@ Vérifiez aussi que le lien `officialLinks.bfmvWebsite` pointe bien vers le site
    supabase: { url: "https://xxxx.supabase.co", anonKey: "eyJ…", posterBucket: "posters" }
    ```
    Ces deux valeurs sont publiques par conception : la sécurité repose sur les politiques RLS.
-4. **Authentication → URL Configuration** : *Site URL* = `https://waywardship.github.io/WebSite/`.
+4. **Authentication → URL Configuration** : *Site URL* = `https://joeybfmv.github.io/WebSite/`.
 
 ### Premier compte administrateur
 
@@ -100,7 +100,7 @@ Les demandes de contact se consultent dans **Table Editor → contact_requests**
 
 1. Créez un dépôt (ex. `WebSite` sous le compte `waywardship`) et poussez le contenu du dossier `joey-bfmv-tribute/` **à la racine** du dépôt.
 2. **Settings → Pages** → *Deploy from a branch* → `main` / `/ (root)`.
-3. Le site sera servi sur `https://waywardship.github.io/WebSite/` ; la page contact sur `…/WebSite/contact.html`.
+3. Le site sera servi sur `https://joeybfmv.github.io/WebSite/` ; la page contact sur `…/WebSite/contact.html`.
 4. Après changement de domaine ou de dépôt, mettez à jour `siteUrl`/`contactPageUrl` dans `js/config.js` et les balises `og:url`/`og:image`.
 
 Tant que Supabase n'est pas configuré, le site fonctionne en **mode démo** (données fictives signalées « DÉMO ») ; supprimez-les en renseignant la configuration.
