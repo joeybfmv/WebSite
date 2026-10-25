@@ -20,11 +20,12 @@ if (emailHref && isFilled(email)) actions.append(el("a", { class: "btn btn--prim
 if (phoneHref && isFilled(phone)) actions.append(el("a", { class: "btn btn--ghost", href: `tel:${phoneHref}`, text: "Appeler" }));
 if (!actions.children.length) actions.append(el("p", { class: "placeholder-note", text: "Coordonnées à renseigner dans js/config.js." }));
 
+const SOCIAL_LABELS = { instagram: "Instagram", x: "X", facebook: "Facebook", youtube: "YouTube", tiktok: "TikTok", spotify: "Spotify", linktree: "Linktree" };
 const socials = Object.entries(CONFIG.socials).map(([k, u]) => [k, safeUrl(u)]).filter(([, u]) => u);
 const socialsBox = document.getElementById("contact-socials");
 socialsBox.append(el("h3", { text: "Réseaux sociaux" }));
 if (socials.length) {
-  socialsBox.append(el("ul", { class: "socials-list" }, socials.map(([k, u]) => el("li", {}, el("a", { class: "btn btn--small btn--ghost", href: u, target: "_blank", rel: "noopener noreferrer", text: k[0].toUpperCase() + k.slice(1) })))));
+  socialsBox.append(el("ul", { class: "socials-list" }, socials.map(([k, u]) => el("li", {}, el("a", { class: "btn btn--small btn--ghost", href: u, target: "_blank", rel: "noopener noreferrer", text: SOCIAL_LABELS[k] || k[0].toUpperCase() + k.slice(1) })))));
 } else socialsBox.append(el("p", { class: "mt-4", text: "Liens à venir." }));
 
 /* ---------- Texte du projet ---------- */

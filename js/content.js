@@ -10,8 +10,11 @@ export const CONTENT = {
       "Depuis longtemps, je suis fan de BFMV : c'est mon groupe n° 1. C'est en partie grâce à eux que j'ai atteint un certain niveau à la guitare et que j'ai de grosses influences metalcore. Ils sont plus qu'un groupe : une vraie inspiration pour ma vie. Et grâce à eux, je me lance aujourd'hui sur scène pour vous faire pogoter !",
       "Alors, prêts à ce qu'un ado de 17 ans vienne casser la scène ?"
     ],
-    photo: "assets/images/band/joey.jpg",
-    photoAlt: "Joɘy en concert, jouant de la guitare sous un éclairage violet"
+    photo: "assets/images/band/joey-portrait.jpg",
+    photoAlt: "Portrait de Joɘy, cheveux longs et lunettes, avec sa guitare, dans une lumière rouge",
+    photoWidth: 1080,
+    photoHeight: 1350,
+    photoClass: "framed--portrait"
   },
 
   bfmv: {

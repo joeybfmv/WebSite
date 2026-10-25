@@ -19,14 +19,15 @@ function renderTextBlock(target, { id, title, eyebrow, paragraphs, placeholder, 
   if (extra) target.append(extra);
 }
 
-function renderPhoto(target, src, alt) {
-  target.replaceChildren(el("img", { src, alt, loading: "lazy", decoding: "async", width: "800", height: "600" }));
+function renderPhoto(target, src, alt, { width = 800, height = 600, cls = "" } = {}) {
+  if (cls) target.classList.add(cls);
+  target.replaceChildren(el("img", { src, alt, loading: "lazy", decoding: "async", width: String(width), height: String(height) }));
 }
 
 function renderStatic() {
   const { about, bfmv, waywardShip, gearTeaser } = CONTENT;
   renderTextBlock(document.getElementById("about-text"), { id: "about-title", eyebrow: "Le guitariste", title: about.title, paragraphs: about.paragraphs, placeholder: about.placeholder });
-  renderPhoto(document.getElementById("about-photo"), about.photo, about.photoAlt);
+  renderPhoto(document.getElementById("about-photo"), about.photo, about.photoAlt, { width: about.photoWidth, height: about.photoHeight, cls: about.photoClass });
 
   const official = safeUrl(CONFIG.officialLinks.bfmvWebsite);
   const link = official ? el("p", { class: "mt-4" }, el("a", { class: "btn btn--ghost btn--small", href: official, target: "_blank", rel: "noopener noreferrer", text: "Site officiel du groupe" })) : null;

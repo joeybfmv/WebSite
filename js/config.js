@@ -22,11 +22,13 @@ export const CONFIG = {
 
   // Laisser "" pour masquer un réseau.
   socials: {
-    instagram: "",
+    instagram: "https://www.instagram.com/joeybfmv/",
+    x: "https://x.com/joey_bfmv/",
     facebook: "",
     youtube: "https://www.youtube.com/@JoeyBFMV",
     tiktok: "https://www.tiktok.com/@joey.bfmv?lang=fr",
-    spotify: ""
+    spotify: "",
+    linktree: "https://linktr.ee/joeybfmv"
   },
 
   features: {

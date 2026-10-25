@@ -2,7 +2,7 @@
 import { CONFIG, isFilled } from "./config.js";
 import { escapeHtml, safeUrl } from "./utils.js";
 
-const SOCIAL_LABELS = { instagram: "Instagram", facebook: "Facebook", youtube: "YouTube", tiktok: "TikTok", spotify: "Spotify" };
+const SOCIAL_LABELS = { instagram: "Instagram", x: "X", facebook: "Facebook", youtube: "YouTube", tiktok: "TikTok", spotify: "Spotify", linktree: "Linktree" };
 
 export function mountFooter(root) {
   if (!root) return;
