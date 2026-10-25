@@ -46,7 +46,8 @@ function heroSmoke() {
   resize();
   window.addEventListener("resize", resize);
   const mk = (smoke) => ({ x: Math.random() * w, y: smoke ? h + Math.random() * 100 : Math.random() * h, r: smoke ? 90 + Math.random() * 140 : 1 + Math.random() * 2.2, vy: smoke ? 0.15 + Math.random() * 0.25 : 0.4 + Math.random() * 1.1, vx: (Math.random() - 0.5) * 0.4, a: Math.random(), smoke });
-  const ps = [...Array.from({ length: 9 }, () => mk(true)), ...Array.from({ length: 55 }, () => mk(false))];
+  const small = window.matchMedia("(max-width: 700px)").matches;
+  const ps = [...Array.from({ length: small ? 5 : 9 }, () => mk(true)), ...Array.from({ length: small ? 26 : 55 }, () => mk(false))];
   function frame() {
     if (!run) return;
     ctx.clearRect(0, 0, w, h);
@@ -61,7 +62,7 @@ function heroSmoke() {
         const a = 0.35 + 0.65 * Math.abs(Math.sin(performance.now() / 400 + p.a * 10));
         ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283);
         ctx.fillStyle = `rgba(255,${59 + Math.round(p.a * 60)},${40},${a})`;
-        ctx.shadowColor = "#ff3b3b"; ctx.shadowBlur = 10; ctx.fill(); ctx.shadowBlur = 0;
+        ctx.shadowColor = "#ff3b3b"; ctx.shadowBlur = small ? 4 : 10; ctx.fill(); ctx.shadowBlur = 0;
       }
     }
     requestAnimationFrame(frame);

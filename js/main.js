@@ -2,6 +2,7 @@
 import { mountNavigation } from "./navigation.js";
 import { mountFooter } from "./footer.js";
 import { mountEffects } from "./effects.js";
+import { initPwa } from "./pwa.js";
 
 document.documentElement.classList.remove("no-js");
 
@@ -26,3 +27,4 @@ initReveal();
 window.__initReveal = initReveal; // utilisé par les scripts de page après rendu dynamique
 
 mountEffects();
+initPwa();
