@@ -24,7 +24,7 @@ export const CONFIG = {
   socials: {
     instagram: "https://www.instagram.com/joeybfmv/",
     x: "https://x.com/joey_bfmv/",
-    facebook: "",
+    facebook: "https://www.facebook.com/profile.php?id=61595797625164&locale=fr_FR",
     youtube: "https://www.youtube.com/@JoeyBFMV",
     tiktok: "https://www.tiktok.com/@joey.bfmv?lang=fr",
     spotify: "",
